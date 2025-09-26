@@ -32,9 +32,18 @@ function carregarClientes() {
 // Carregar clientes na inicialização
 carregarClientes();
 
-export async function GET() {
-  console.log('GET /api/clientes - retornando:', clientes);
-  return Response.json(clientes);
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get('email');
+    if (email) {
+      const found = clientes.find(c => c.email === email);
+      return Response.json(found || null);
+    }
+    return Response.json(clientes);
+  } catch (error) {
+    return Response.json({ error: 'Erro ao buscar clientes' }, { status: 500 });
+  }
 }
 
 export async function POST(request) {
@@ -49,6 +58,27 @@ export async function POST(request) {
     return Response.json(cliente, { status: 201 });
   } catch (error) {
     return Response.json({ error: 'Erro ao adicionar cliente' }, { status: 500 });
+  }
+}
+
+export async function PUT(request) {
+  try {
+    const update = await request.json();
+    const filePath = path.join(process.cwd(), 'data', 'clientes.json');
+
+    // upsert by email
+    const idx = clientes.findIndex(c => c.email === update.email);
+    if (idx >= 0) {
+      clientes[idx] = { ...clientes[idx], ...update };
+    } else {
+      const novo = { id: Date.now(), ...update };
+      clientes.push(novo);
+    }
+
+    fs.writeFileSync(filePath, JSON.stringify(clientes, null, 2));
+    return Response.json(idx >= 0 ? clientes[idx] : clientes[clientes.length - 1]);
+  } catch (error) {
+    return Response.json({ error: 'Erro ao atualizar cliente' }, { status: 500 });
   }
 }
 

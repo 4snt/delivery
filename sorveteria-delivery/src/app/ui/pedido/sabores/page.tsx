@@ -13,7 +13,8 @@ export default function SaboresPage() {
   const { pedido, setPedido } = usePedido();
   const router = useRouter();
   const [sabores, setSabores] = useState<Sabor[]>([]);
-  const [selecionados, setSelecionados] = useState<string[]>(pedido.sabores || []);
+  // Selecionados: sabores do último pote (em montagem)
+  const [selecionados, setSelecionados] = useState<string[]>(pedido.potes.length > 0 ? pedido.potes[pedido.potes.length - 1].sabores : []);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,7 +42,11 @@ export default function SaboresPage() {
 
   const handleAvancar = () => {
     if (selecionados.length === 0) return;
-    setPedido((prev) => ({ ...prev, sabores: selecionados }));
+    setPedido(prev => {
+      const potes = [...prev.potes];
+      potes[potes.length - 1] = { ...potes[potes.length - 1], sabores: selecionados };
+      return { ...prev, potes };
+    });
     router.push("/ui/pedido/adicionais");
   };
 
@@ -78,7 +83,6 @@ export default function SaboresPage() {
         <h1 className="text-3xl font-bold text-center mb-8 text-purple-700">
           Selecione os sabores do sorvete
         </h1>
-        
         {sabores.length === 0 ? (
           <div className="text-center">
             <p className="text-gray-500 text-xl">Nenhum sabor disponível</p>
@@ -109,7 +113,6 @@ export default function SaboresPage() {
                     )}
                   </div>
                 </div>
-
                 {/* Imagem do sabor */}
                 <div className="aspect-square bg-gradient-to-br from-purple-100 to-green-100 flex items-center justify-center">
                   {sabor.imagem ? (
@@ -127,7 +130,6 @@ export default function SaboresPage() {
                     </div>
                   )}
                 </div>
-
                 {/* Nome do sabor */}
                 <div className="p-4 text-center">
                   <h3 className="font-semibold text-lg text-purple-700">
@@ -138,7 +140,6 @@ export default function SaboresPage() {
             ))}
           </div>
         )}
-
         {/* Botão avançar */}
         <div className="text-center">
           <button

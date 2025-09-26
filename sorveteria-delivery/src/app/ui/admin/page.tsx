@@ -18,11 +18,28 @@ interface Cliente {
   email: string;
 }
 
-// NOVO: Interface para o pedido com status
+// Tipos para exibir pedidos no painel
+interface Produto {
+  tamanho: string;
+  preco: number;
+  sabores: string[];
+  adicionais?: string[];
+}
+
+interface ClientePedido {
+  nome: string;
+  email: string;
+  endereco?: string;
+}
+
 interface Pedido {
   id: number;
-  nome: string;
-  status: "Em preparo" | "Saiu para a entrega" | "Entregue";
+  status: string;
+  nome?: string;
+  pagamento?: string;
+  endereco?: string;
+  cliente?: ClientePedido;
+  potes?: Produto[];
 }
 
 export default function AdminPage() {
@@ -91,6 +108,16 @@ export default function AdminPage() {
       setPedidos(pedidos.map(p => p.id === id ? { ...p, status: newStatus } : p));
     } catch (err) {
       console.error(err instanceof Error ? err.message : 'Erro desconhecido ao atualizar status');
+    }
+  };
+
+  const handleDeletarPedido = async (id: number) => {
+    try {
+      const response = await fetch(`/api/pedidos?id=${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error("Erro de rede", err);
     }
   };
 
@@ -200,7 +227,7 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Painel do Administrador</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
+          
           {/* Seção de Pedidos (item 4) */}
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 className="text-2xl font-bold mb-4">Pedidos</h2>
@@ -212,6 +239,8 @@ export default function AdminPage() {
                       <span className="font-medium">Pedido #{p.id} - {p.nome}</span>
                       <p className="text-sm text-gray-500">Status: {p.status}</p>
                     </div>
+                    
+                    
                     <select
                       value={p.status}
                       onClick={e => e.stopPropagation()}
@@ -223,6 +252,7 @@ export default function AdminPage() {
                       <option value="Entregue">Entregue</option>
                     </select>
                   </div>
+                  
                 ))
               ) : (
                 <p>Nenhum pedido encontrado.</p>
@@ -256,7 +286,13 @@ export default function AdminPage() {
                   <div className="flex justify-between items-start">
                     <div>
                       <span className="font-medium">{s.nome}</span>
-                      {s.imagem && <p className="text-sm text-gray-500 truncate">{s.imagem}</p>}
+                      {s.imagem && (
+                        <img
+                          src={s.imagem}
+                          alt={s.nome}
+                          className="w-20 h-20 object-cover rounded mt-2"
+                        />
+                      )}
                     </div>
                     <button 
                       onClick={() => handleRemoveSabor(s.id)} 
@@ -349,20 +385,39 @@ export default function AdminPage() {
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-lg w-full relative">
             <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onClick={() => setShowModal(false)}>&times;</button>
             <h2 className="text-2xl font-bold mb-4">Detalhes do Pedido #{pedidoSelecionado.id}</h2>
-            <div className="space-y-2">
-              {Object.entries(pedidoSelecionado).map(([key, value]) => (
-                <div key={key}>
-                  <span className="font-semibold capitalize">{key}:</span> {Array.isArray(value)
-                    ? (
-                      <ul className="list-disc list-inside">
-                        {value.map((item, idx) => (
-                          <li key={idx}>{String(item)}</li>
-                        ))}
-                      </ul>
-                    )
-                    : String(value)}
-                </div>
-              ))}
+            <div className="space-y-3">
+              <div><span className="font-semibold">Status:</span> {pedidoSelecionado.status || '-'}</div>
+              <div><span className="font-semibold">Pagamento:</span> {pedidoSelecionado.pagamento || '-'}</div>
+              <div><span className="font-semibold">Endereço:</span> {pedidoSelecionado.endereco || '-'}</div>
+              <div>
+                <span className="font-semibold">Cliente:</span>
+                {pedidoSelecionado.cliente ? (
+                  <div className="ml-2">
+                    <div><span className="font-medium">Nome:</span> {pedidoSelecionado.cliente.nome || '-'}</div>
+                    <div><span className="font-medium">Email:</span> {pedidoSelecionado.cliente.email || '-'}</div>
+                    <div><span className="font-medium">Endereço:</span> {pedidoSelecionado.cliente.endereco || '-'}</div>
+                  </div>
+                ) : (
+                  <span> -</span>
+                )}
+              </div>
+              <div>
+                <span className="font-semibold">Potes:</span>
+                {Array.isArray(pedidoSelecionado.potes) && pedidoSelecionado.potes.length > 0 ? (
+                  <ul className="list-disc list-inside ml-4">
+                    {pedidoSelecionado.potes.map((p: any, idx: number) => (
+                      <li key={idx} className="mb-2">
+                        <div><span className="font-medium">Tamanho:</span> {p.tamanho}</div>
+                        <div><span className="font-medium">Preço:</span> R$ {Number(p.preco || 0).toFixed(2)}</div>
+                        <div><span className="font-medium">Sabores:</span> {Array.isArray(p.sabores) && p.sabores.length ? p.sabores.join(', ') : 'Nenhum'}</div>
+                        <div><span className="font-medium">Adicionais:</span> {Array.isArray(p.adicionais) && p.adicionais.length ? p.adicionais.join(', ') : 'Nenhum'}</div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span> Nenhum</span>
+                )}
+              </div>
             </div>
           </div>
         </div>

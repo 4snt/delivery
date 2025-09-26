@@ -1,93 +1,221 @@
 [
-  {},
   {
-    "status": "Em preparo",
-    "tamanho": "medio",
+    "id": 2,
+    "cliente": "Maria Oliveira",
+    "endereco": "Rua das Flores, 123",
+    "produto": "Sorvete",
     "sabores": [
-      "Sorvete de ninho"
+      "Chocolate",
+      "Morango"
     ],
     "adicionais": [
-      "Calda de Morango"
+      "Granulado",
+      "Chantilly"
     ],
-    "pagamento": "pix",
-    "endereco": "das",
-    "id": 1758508715524
+    "pagamento": "Pix",
+    "quantidade": 1,
+    "preco": 10,
+    "status": "Entregue"
   },
   {
-    "status": "Em preparo",
-    "tamanho": "grande",
+    "status": "Entregue",
+    "tamanho": "medio",
     "sabores": [
-      "Sorvete de ninho",
-      "Açai"
+      "Flocos",
+      "Limão",
+      "Doce de Leite",
+      "Chocolate",
+      "Morango",
+      "Baunilha",
+      "Napolitano"
     ],
     "adicionais": [
-      "Calda de Morango",
+      "Granulado",
+      "Leite Condensado",
       "Paçoca",
-      "Leite Condensado"
+      "Calda de Morango",
+      "Calda de Chocolate",
+      "Castanha",
+      "Chantilly"
     ],
     "pagamento": "pix",
-    "endereco": "rua rau",
-    "id": 1758508757743
+    "endereco": "lkklo",
+    "id": 1758551315048
   },
   {
     "status": "Em preparo",
     "tamanho": "pequeno",
     "sabores": [
-      "Sorvete de ninho"
+      "Sorvete de Ninho",
+      "Açai",
+      "Yogo Morango"
     ],
     "adicionais": [
       "Granulado",
-      "Calda de Chocolate"
-    ],
-    "pagamento": "credito",
-    "endereco": "rua da Mari",
-    "id": 1758509439354
-  },
-  {
-    "status": "Em preparo",
-    "tamanho": "medio",
-    "sabores": [
-      "Açai",
-      "Sorvete de ninho"
-    ],
-    "adicionais": [
+      "Calda de Chocolate",
       "Calda de Morango",
       "Paçoca"
     ],
     "pagamento": "dinheiro",
-    "endereco": "rua 123\n",
-    "id": 1758509552728
+    "endereco": "RUa sao francisco\n",
+    "id": 1758552517643
   },
   {
+    "potes": [],
     "status": "Em preparo",
-    "tamanho": "pequeno",
-    "sabores": [
-      "Sorvete de ninho"
-    ],
-    "adicionais": [
-      "Calda de Morango",
-      "Paçoca",
-      "Brownie reboco de parede",
-      "Leite em pó"
-    ],
-    "pagamento": "dinheiro",
-    "endereco": "rua 123\n",
-    "id": 1758509573736
+    "cliente": {
+      "nome": "",
+      "email": "",
+      "endereco": ""
+    },
+    "pagamento": "credito",
+    "endereco": "a",
+    "id": 1758554109062
   },
   {
+    "potes": [],
     "status": "Em preparo",
-    "tamanho": "pequeno",
-    "sabores": [
-      "Sorvete de ninho"
+    "cliente": {
+      "nome": "a",
+      "email": "a@gmail.com",
+      "endereco": ""
+    },
+    "pagamento": "pix",
+    "endereco": "aaa",
+    "id": 1758562519789
+  },
+  {
+    "potes": [
+      {
+        "tamanho": "medio",
+        "preco": 15,
+        "sabores": [
+          "Açai"
+        ],
+        "adicionais": [
+          "Calda de Morango"
+        ]
+      }
     ],
-    "adicionais": [
-      "Calda de Morango",
-      "Paçoca",
-      "Brownie reboco de parede",
-      "Leite em pó"
-    ],
+    "status": "Em preparo",
+    "cliente": {
+      "nome": "Mari",
+      "email": "mari@hahaha",
+      "endereco": ""
+    },
     "pagamento": "dinheiro",
-    "endereco": "rua 123\n",
-    "id": 1758509584604
+    "endereco": "aaaaabbbb",
+    "id": 1758563294251
+  },
+  {
+    "potes": [
+      {
+        "tamanho": "pequeno",
+        "preco": 10,
+        "sabores": [
+          "Yogo Morango",
+          "Sorvete de Ninho"
+        ],
+        "adicionais": [
+          "Granulado",
+          "Calda de Chocolate",
+          "Calda de Morango",
+          "Paçoca",
+          "Leite Condensado",
+          "Castanha",
+          "Chantilly"
+        ]
+      }
+    ],
+    "status": "Em preparo",
+    "cliente": {
+      "nome": "gabriel god",
+      "email": "gabrielgcgcgcg@gmail.com",
+      "endereco": "rua sao sao sao"
+    },
+    "pagamento": "pix",
+    "endereco": "rua sao sao sao",
+    "id": 1758722231910
+  },
+  {
+    "potes": [
+      {
+        "tamanho": "grande",
+        "preco": 20,
+        "sabores": [
+          "Yogo Morango",
+          "Sorvete de Ninho"
+        ],
+        "adicionais": [
+          "Granulado",
+          "Calda de Chocolate",
+          "Calda de Morango",
+          "Paçoca",
+          "Leite Condensado",
+          "Castanha",
+          "Chantilly"
+        ]
+      },
+      {
+        "tamanho": "medio",
+        "preco": 15,
+        "sabores": [
+          "Açai",
+          "Sorvete de Ninho"
+        ],
+        "adicionais": [
+          "Granulado"
+        ]
+      }
+    ],
+    "status": "Em preparo",
+    "cliente": {
+      "nome": "Maira",
+      "email": "maira@gmail.com",
+      "endereco": "RUa francisco sao"
+    },
+    "pagamento": "pix",
+    "endereco": "RUa francisco sao",
+    "id": 1758722442672
+  },
+  {
+    "potes": [
+      {
+        "tamanho": "medio",
+        "preco": 15,
+        "sabores": []
+      },
+      {
+        "tamanho": "grande",
+        "preco": 20,
+        "sabores": [
+          "Açai",
+          "Sorvete de Ninho"
+        ],
+        "adicionais": [
+          "Castanha"
+        ]
+      },
+      {
+        "tamanho": "grande",
+        "preco": 20,
+        "sabores": [
+          "Açai",
+          "Yogo Morango"
+        ],
+        "adicionais": [
+          "Leite em Pó"
+        ]
+      }
+    ],
+    "status": "Em preparo",
+    "cliente": {
+      "nome": "gabriel",
+      "email": "gabrielgc@gmail.com",
+      "endereco": "RUA DAS RUAS\n"
+    },
+    "pagamento": "pix",
+    "endereco": "RUA DAS RUAS\n",
+    "id": 1758723276820
   }
 ]

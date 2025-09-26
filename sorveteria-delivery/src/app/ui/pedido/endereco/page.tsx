@@ -1,17 +1,40 @@
 "use client";
 import { usePedido } from "../PedidoContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function EnderecoPage() {
   const { pedido, setPedido } = usePedido();
-  const [endereco, setEndereco] = useState(pedido.endereco || "");
+  const { data: session } = useSession();
+  const [endereco, setEndereco] = useState(pedido.endereco || pedido.cliente?.endereco || "");
   const [finalizado, setFinalizado] = useState(false);
+
+  useEffect(() => {
+    if (!pedido.cliente?.email && session?.user?.email) {
+      setPedido(prev => ({
+        ...prev,
+        cliente: {
+          ...prev.cliente,
+          nome: session.user?.name || prev.cliente.nome,
+          email: session.user?.email || prev.cliente.email,
+        },
+      }));
+    }
+  }, [session, pedido.cliente?.email, setPedido]);
 
   const handleFinalizar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!endereco) return;
-    const pedidoFinal = { ...pedido, endereco };
+    const pedidoFinal = { ...pedido, endereco, cliente: { ...pedido.cliente, endereco } };
     try {
+      // upsert cliente with updated endereco
+      if (pedidoFinal.cliente?.email) {
+        await fetch('/api/clientes', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pedidoFinal.cliente),
+        });
+      }
       await fetch("/api/pedidos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -31,9 +54,13 @@ export default function EnderecoPage() {
           <h1 className="text-2xl font-bold mb-4 text-purple-700">Pedido Finalizado!</h1>
           <h2 className="text-lg font-semibold mb-4 text-green-600">Resumo do Pedido:</h2>
           <ul className="text-left mb-6 w-full text-gray-700">
-            <li><b>Tamanho:</b> {pedido.tamanho}</li>
-            <li><b>Sabores:</b> {pedido.sabores?.join(", ")}</li>
-            <li><b>Adicionais:</b> {pedido.adicionais?.length ? pedido.adicionais.join(", ") : "Nenhum"}</li>
+            {pedido.potes.map((pote, idx) => (
+              <li key={idx} className="mb-2">
+                <b>Pote {idx + 1}:</b> {pote.tamanho} - R$ {pote.preco.toFixed(2)}<br />
+                <b>Sabores:</b> {pote.sabores.join(", ")}<br />
+                <b>Adicionais:</b> {pote.adicionais?.length ? pote.adicionais.join(", ") : "Nenhum"}
+              </li>
+            ))}
             <li><b>Pagamento:</b> {pedido.pagamento}</li>
             <li><b>Endereço:</b> {endereco}</li>
           </ul>

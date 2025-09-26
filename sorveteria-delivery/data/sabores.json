@@ -1,12 +1,17 @@
 [
   {
-    "nome": "Sorvete de ninho",
-    "imagem": "",
-    "id": 1758482968603
+    "nome": "Sorvete de Ninho",
+    "imagem": "/Gemini_Generated_Image_j8uirpj8uirpj8ui.png",
+    "id": 1758552212419
   },
   {
     "nome": "Açai",
-    "imagem": "",
-    "id": 1758509474431
+    "imagem": "/Gemini_Generated_Image_jzlh94jzlh94jzlh.png",
+    "id": 1758552308622
+  },
+  {
+    "nome": "Yogo Morango",
+    "imagem": "/Gemini_Generated_Image_hj6gqzhj6gqzhj6g.png",
+    "id": 1758552416028
   }
 ]

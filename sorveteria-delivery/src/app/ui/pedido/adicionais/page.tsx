@@ -12,7 +12,8 @@ export default function AdicionaisPage() {
   const { pedido, setPedido } = usePedido();
   const router = useRouter();
   const [adicionais, setAdicionais] = useState<Adicional[]>([]);
-  const [selecionados, setSelecionados] = useState<string[]>(pedido.adicionais || []);
+  // Selecionados: adicionais do último pote (em montagem)
+  const [selecionados, setSelecionados] = useState<string[]>(pedido.potes.length > 0 && pedido.potes[pedido.potes.length - 1].adicionais ? pedido.potes[pedido.potes.length - 1].adicionais! : []);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,8 +40,12 @@ export default function AdicionaisPage() {
   };
 
   const handleAvancar = () => {
-    setPedido((prev) => ({ ...prev, adicionais: selecionados }));
-    router.push("/ui/pedido/pagamento");
+    setPedido(prev => {
+      const potes = [...prev.potes];
+      potes[potes.length - 1] = { ...potes[potes.length - 1], adicionais: selecionados };
+      return { ...prev, potes };
+    });
+    router.push("/ui/pedido/carrinho");
   };
 
   if (loading) {
