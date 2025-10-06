@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { PedidoProvider } from "./ui/pedido/PedidoContext";
-import Providers from "./providers";
+import Providers from "@/app/providers";
 import Link from "next/link";
 import React from "react";
 import HeaderClient from "./HeaderClient";

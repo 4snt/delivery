@@ -116,6 +116,9 @@ export default function AdminPage() {
       const response = await fetch(`/api/pedidos?id=${id}`, {
         method: "DELETE",
       });
+      if (response.ok) {
+        setPedidos(prev => prev.filter(p => p.id !== id));
+      }
     } catch (err) {
       console.error("Erro de rede", err);
     }
@@ -236,23 +239,29 @@ export default function AdminPage() {
                 pedidos.map(p => (
                   <div key={p.id} className="p-3 border rounded-lg flex justify-between items-center cursor-pointer hover:bg-gray-50" onClick={() => { setPedidoSelecionado(p); setShowModal(true); }}>
                     <div>
-                      <span className="font-medium">Pedido #{p.id} - {p.nome}</span>
+                      <span className="font-medium">Pedido #{p.id} - {(p?.cliente?.nome || p?.nome || '-') }</span>
+                      <p className="text-sm text-gray-500">Cliente: {p?.cliente?.email || '-'}</p>
                       <p className="text-sm text-gray-500">Status: {p.status}</p>
                     </div>
-                    
-                    
-                    <select
-                      value={p.status}
-                      onClick={e => e.stopPropagation()}
-                      onChange={(e) => handleStatusChange(p.id, e.target.value as Pedido['status'])}
-                      className="border rounded p-1 text-sm"
-                    >
-                      <option value="Em preparo">Em preparo</option>
-                      <option value="Saiu para a entrega">Saiu para a entrega</option>
-                      <option value="Entregue">Entregue</option>
-                    </select>
+                    <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                      <select
+                        value={p.status}
+                        onChange={(e) => handleStatusChange(p.id, e.target.value as Pedido['status'])}
+                        className="border rounded p-1 text-sm"
+                      >
+                        <option value="Em preparo">Em preparo</option>
+                        <option value="Saiu para a entrega">Saiu para a entrega</option>
+                        <option value="Entregue">Entregue</option>
+                      </select>
+                      <button
+                        className="text-red-600 border border-red-200 hover:bg-red-50 rounded px-2 py-1 text-sm"
+                        title="Remover pedido"
+                        onClick={() => handleDeletarPedido(p.id)}
+                      >
+                        Remover
+                      </button>
+                    </div>
                   </div>
-                  
                 ))
               ) : (
                 <p>Nenhum pedido encontrado.</p>

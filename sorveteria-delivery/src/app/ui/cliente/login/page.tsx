@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { usePedido } from "../../pedido/PedidoContext";
 import { useState } from "react";
-import { useAuthToken } from "@/src/app/AuthTokenProvider";
+import { useAuthToken } from "@/app/AuthTokenProvider";
 
 export default function LoginClientePage() {
   const router = useRouter();

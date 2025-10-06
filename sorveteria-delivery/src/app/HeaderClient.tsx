@@ -26,10 +26,13 @@ export default function HeaderClient() {
         {session?.user ? (
           <>
             <span className="text-sm">{session.user.name || session.user.email}</span>
-            <button onClick={()=>signOut()} className="px-3 py-1 rounded bg-white/20">Sair</button>
+            <button onClick={()=>signOut({ callbackUrl: "/ui/cliente/login" })} className="px-3 py-1 rounded bg-white/20">Sair</button>
           </>
         ) : (
-          <button onClick={()=>signIn('google')} className="px-3 py-1 rounded bg_white/20">Google</button>
+          <>
+            <Link href="/ui/cliente/login" className="px-3 py-1 rounded bg-white/20">Entrar</Link>
+            <button onClick={()=>signIn('google')} className="px-3 py-1 rounded bg-white/20">Google</button>
+          </>
         )}
       </div>
     </header>
