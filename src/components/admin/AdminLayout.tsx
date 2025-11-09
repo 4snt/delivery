@@ -24,6 +24,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               >
                 Dashboard
               </Link>
+              <a
+                href="http://localhost:5555"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-900"
+                title="Abrir Prisma Studio"
+              >
+                🗄️ DB Studio
+              </a>
               <Link href="/" className="text-gray-600 hover:text-gray-900">
                 Sair
               </Link>

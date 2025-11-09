@@ -37,7 +37,7 @@ export class PrismaAdditionalRepository implements IAdditionalRepository {
   async findAll(): Promise<Additional[]> {
     const additionals = await this.prisma.adicional.findMany();
 
-    return additionals.map((additional) =>
+    return additionals.map((additional: any) =>
       Additional.create({
         id: additional.id,
         name: additional.nome,

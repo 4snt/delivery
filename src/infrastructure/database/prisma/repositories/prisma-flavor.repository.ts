@@ -40,7 +40,7 @@ export class PrismaFlavorRepository implements IFlavorRepository {
   async findAll(): Promise<Flavor[]> {
     const flavors = await this.prisma.sabor.findMany();
 
-    return flavors.map((flavor) =>
+    return flavors.map((flavor: any) =>
       Flavor.create({
         id: flavor.id,
         name: flavor.nome,

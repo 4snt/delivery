@@ -81,7 +81,7 @@ export class PrismaOrderRepository implements IOrderRepository {
       },
     });
 
-    return orders.map((order) =>
+    return orders.map((order: any) =>
       Order.create({
         id: order.id,
         customerId: order.clienteId,
@@ -106,7 +106,7 @@ export class PrismaOrderRepository implements IOrderRepository {
       },
     });
 
-    return orders.map((order) =>
+    return orders.map((order: any) =>
       Order.create({
         id: order.id,
         customerId: order.clienteId,

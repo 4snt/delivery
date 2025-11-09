@@ -51,14 +51,8 @@ export class AdminController {
     try {
       const result = await this.getDashboardStatsUseCase.execute();
 
-      if (result.isLeft()) {
-        const error = result.value;
-        return NextResponse.json(
-          { error: error.message },
-          { status: 500 }
-        );
-      }
-
+      // GetDashboardStatsUseCase nunca retorna erro (Either<never, ...>)
+      // então sempre terá sucesso
       return NextResponse.json(result.value.stats);
     } catch (error) {
       console.error('[AdminController.getDashboardStats]', error);

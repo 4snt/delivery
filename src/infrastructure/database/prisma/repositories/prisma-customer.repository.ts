@@ -59,7 +59,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
   async findAll(): Promise<Customer[]> {
     const customers = await this.prisma.cliente.findMany();
 
-    return customers.map((customer) =>
+    return customers.map((customer: any) =>
       Customer.create({
         id: customer.id,
         name: customer.nome,

@@ -12,10 +12,13 @@ O projeto segue uma **arquitetura em camadas** com **inversão de dependências 
 - ✅ Independência de frameworks
 - ✅ Escalabilidade e flexibilidade
 
-### � Documentação Completa
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Explicação detalhada da arquitetura DDD Hexagonal
-- **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** - Diagramas visuais das camadas
-- **[API_GUIDE.md](./API_GUIDE.md)** - Guia completo das APIs RESTful
+### 📚 Documentação Completa
+- **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Explicação detalhada da arquitetura DDD Hexagonal
+- **[ARCHITECTURE_DIAGRAM.md](./docs/ARCHITECTURE_DIAGRAM.md)** - Diagramas visuais das camadas
+- **[API_GUIDE.md](./docs/API_GUIDE.md)** - Guia completo das APIs RESTful
+- **[QUICKSTART.md](./docs/QUICKSTART.md)** - Guia rápido de 5 minutos
+- **[MIGRATION_GUIDE.md](./docs/MIGRATION_GUIDE.md)** - Guia de migração Legacy → v1
+- **[INDEX.md](./docs/INDEX.md)** - Índice completo de recursos
 
 ### 🎯 Camadas da Aplicação
 
@@ -57,9 +60,13 @@ npx prisma db seed
 
 # Iniciar servidor de desenvolvimento
 pnpm dev
+
+# (Opcional) Abrir Prisma Studio - Interface visual do banco
+pnpm prisma studio
 ```
 
-Acesse: [http://localhost:3000](http://localhost:3000)
+Acesse: [http://localhost:3000](http://localhost:3000)  
+Prisma Studio: [http://localhost:5555](http://localhost:5555)
 
 ## 🗄️ Banco de Dados
 
@@ -148,7 +155,7 @@ Base URL: http://localhost:3000/api/v1
 - `GET /api/v1/flavors` - Listar sabores
 - `GET /api/v1/additionals` - Listar adicionais
 
-📖 **[Ver documentação completa da API v1](./API_GUIDE.md)**
+📖 **[Ver documentação completa da API v1](./docs/API_GUIDE.md)**
 
 #### **📦 API Legacy (Antiga - Depreciada)**
 Mantida por compatibilidade, mas será removida em futuras versões.
@@ -770,11 +777,11 @@ pnpm dev
 
 | Arquivo | Descrição | Tempo de Leitura |
 |---------|-----------|------------------|
-| **[QUICKSTART.md](./QUICKSTART.md)** | Guia rápido para começar | 5 min ⚡ |
-| **[ARCHITECTURE.md](./ARCHITECTURE.md)** | Arquitetura detalhada DDD Hexagonal | 30 min 🏗️ |
-| **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** | Diagramas visuais das camadas | 20 min 📊 |
-| **[API_GUIDE.md](./API_GUIDE.md)** | Guia completo das APIs v1 | 25 min 🔌 |
-| **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** | Migração Legacy → v1 | 20 min 🔄 |
+| **[QUICKSTART.md](./docs/QUICKSTART.md)** | Guia rápido para começar | 5 min ⚡ |
+| **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** | Arquitetura detalhada DDD Hexagonal | 30 min 🏗️ |
+| **[ARCHITECTURE_DIAGRAM.md](./docs/ARCHITECTURE_DIAGRAM.md)** | Diagramas visuais das camadas | 20 min 📊 |
+| **[API_GUIDE.md](./docs/API_GUIDE.md)** | Guia completo das APIs v1 | 25 min 🔌 |
+| **[MIGRATION_GUIDE.md](./docs/MIGRATION_GUIDE.md)** | Migração Legacy → v1 | 20 min 🔄 |
 | **[SUMMARY.md](./SUMMARY.md)** | Sumário executivo do projeto | 10 min 📋 |
 | **[INDEX.md](./INDEX.md)** | Índice completo de recursos | 5 min 📖 |
 
