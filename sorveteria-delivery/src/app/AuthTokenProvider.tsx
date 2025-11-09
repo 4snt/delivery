@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { verifyClienteToken } from "@/lib/jwt";
 
 interface AuthTokenContextType {
   token: string | null;
@@ -11,12 +10,29 @@ interface AuthTokenContextType {
   logout: () => void;
 }
 
+interface JwtPayload {
+  email: string;
+  nome?: string;
+}
+
 const AuthTokenContext = createContext<AuthTokenContextType | undefined>(undefined);
 
 export function useAuthToken() {
   const ctx = useContext(AuthTokenContext);
   if (!ctx) throw new Error("useAuthToken deve ser usado dentro de AuthTokenProvider");
   return ctx;
+}
+
+// Função client-side para decodificar JWT (sem verificação de assinatura)
+function decodeJwtClient(token: string): JwtPayload | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const payload = JSON.parse(atob(parts[1]));
+    return payload as JwtPayload;
+  } catch {
+    return null;
+  }
 }
 
 export default function AuthTokenProvider({ children }: { children: React.ReactNode }) {
@@ -34,7 +50,7 @@ export default function AuthTokenProvider({ children }: { children: React.ReactN
     else localStorage.removeItem('cliente.jwt');
   };
 
-  const decoded = useMemo(() => (token ? verifyClienteToken(token) : null), [token]);
+  const decoded = useMemo(() => (token ? decodeJwtClient(token) : null), [token]);
   const email = decoded?.email || null;
   const nome = decoded?.nome || null;
 
