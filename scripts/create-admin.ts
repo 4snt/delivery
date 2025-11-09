@@ -13,13 +13,13 @@ async function createAdminUser() {
       where: { email },
       update: {
         isAdmin: true,
-      },
+      } as any,
       create: {
         email,
         nome: 'Administrador',
         senha: hashedPassword,
         isAdmin: true,
-      },
+      } as any,
     });
 
     console.log('✅ Usuário admin criado/atualizado com sucesso!');

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-file:./homolog.db}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_ENV=production
+    volumes:
+      - ./prisma:/app/prisma
+      - db-data:/app/prisma
+    restart: unless-stopped
+    networks:
+      - delivery-network
+
+  # Opcional: PostgreSQL para produção
+  # postgres:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     - POSTGRES_DB=delivery
+  #     - POSTGRES_USER=delivery
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   networks:
+  #     - delivery-network
+  #   restart: unless-stopped
+
+volumes:
+  db-data:
+  # postgres-data:
+
+networks:
+  delivery-network:
+    driver: bridge
