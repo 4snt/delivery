@@ -2,9 +2,6 @@ import { IAdditionalRepository } from '@/core/domain/repositories/additional.rep
 import { Additional } from '@/core/domain/entities/additional.entity';
 import { PrismaClient } from '@prisma/client';
 
-/**
- * Prisma Additional Repository Implementation
- */
 export class PrismaAdditionalRepository implements IAdditionalRepository {
   constructor(private prisma: PrismaClient) {}
 
