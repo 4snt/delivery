@@ -12,6 +12,7 @@ export class Order {
     public readonly totalValue: number,
     public readonly paymentMethod: string,
     public readonly deliveryAddress: string,
+    public readonly status: string,
     public readonly createdAt: Date
   ) {}
 
@@ -24,6 +25,7 @@ export class Order {
     totalValue: number;
     paymentMethod: string;
     deliveryAddress: string;
+    status?: string;
     createdAt?: Date;
   }): Order {
     return new Order(
@@ -35,6 +37,7 @@ export class Order {
       props.totalValue,
       props.paymentMethod,
       props.deliveryAddress,
+      props.status || "Pendente",
       props.createdAt || new Date()
     );
   }
@@ -49,6 +52,7 @@ export class Order {
       totalValue: this.totalValue,
       paymentMethod: this.paymentMethod,
       deliveryAddress: this.deliveryAddress,
+      status: this.status,
       createdAt: this.createdAt,
     };
   }

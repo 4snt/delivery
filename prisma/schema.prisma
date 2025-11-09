@@ -41,6 +41,7 @@ model Pedido {
   valorTotal  Float
   formaPagamento String
   enderecoEntrega String
+  status      String   @default("Pendente")
   createdAt   DateTime @default(now())
 }
 

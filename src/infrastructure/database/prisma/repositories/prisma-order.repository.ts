@@ -16,6 +16,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         valorTotal: order.totalValue,
         formaPagamento: order.paymentMethod,
         enderecoEntrega: order.deliveryAddress,
+        status: order.status || "Pendente",
         sabores: {
           create: order.flavorIds.map((flavorId) => ({
             saborId: flavorId
@@ -42,6 +43,7 @@ export class PrismaOrderRepository implements IOrderRepository {
       totalValue: created.valorTotal,
       paymentMethod: created.formaPagamento,
       deliveryAddress: created.enderecoEntrega,
+      status: created.status,
       createdAt: created.createdAt,
     });
   }
@@ -66,6 +68,7 @@ export class PrismaOrderRepository implements IOrderRepository {
       totalValue: order.valorTotal,
       paymentMethod: order.formaPagamento,
       deliveryAddress: order.enderecoEntrega,
+      status: order.status,
       createdAt: order.createdAt,
     });
   }
@@ -88,6 +91,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         totalValue: order.valorTotal,
         paymentMethod: order.formaPagamento,
         deliveryAddress: order.enderecoEntrega,
+        status: order.status,
         createdAt: order.createdAt,
       })
     );
@@ -112,6 +116,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         totalValue: order.valorTotal,
         paymentMethod: order.formaPagamento,
         deliveryAddress: order.enderecoEntrega,
+        status: order.status,
         createdAt: order.createdAt,
       })
     );
@@ -123,6 +128,7 @@ export class PrismaOrderRepository implements IOrderRepository {
     if (data.totalValue) updateData.valorTotal = data.totalValue;
     if (data.paymentMethod) updateData.formaPagamento = data.paymentMethod;
     if (data.deliveryAddress) updateData.enderecoEntrega = data.deliveryAddress;
+    if (data.status) updateData.status = data.status;
 
     const updated = await this.prisma.pedido.update({
       where: { id },
@@ -142,6 +148,7 @@ export class PrismaOrderRepository implements IOrderRepository {
       totalValue: updated.valorTotal,
       paymentMethod: updated.formaPagamento,
       deliveryAddress: updated.enderecoEntrega,
+      status: updated.status,
       createdAt: updated.createdAt,
     });
   }
