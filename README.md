@@ -35,30 +35,65 @@ src/
 └── shared/                  # COMPARTILHADO (Either, Errors)
 ```
 
-## �🚀 Tecnologias
+## 🚀 Tecnologias
 
 - **Next.js 15.5.3** - Framework React com App Router
 - **TypeScript** - Tipagem estática
 - **Prisma ORM** - Gerenciamento de banco de dados
-- **SQLite** - Banco de dados relacional
+- **PostgreSQL** - Banco de dados relacional (produção)
+- **SQLite** - Banco de dados para desenvolvimento local
 - **NextAuth.js** - Autenticação (Google OAuth + Credentials)
 - **Tailwind CSS 4** - Estilização
 - **bcryptjs** - Hash de senhas
 - **JWT** - Tokens de autenticação
 - **Clean Architecture** - Padrões DDD, Hexagonal, SOLID
 
-## 📦 Instalação
+## � Deploy
+
+### Deploy na Vercel (Recomendado)
+
+Este projeto está otimizado para deploy na Vercel:
 
 ```bash
-# Instalar dependências
+# 1. Instalar Vercel CLI
+npm i -g vercel
+
+# 2. Login
+vercel login
+
+# 3. Deploy
+vercel --prod
+```
+
+**📖 [Guia Completo de Deploy na Vercel →](./VERCEL_DEPLOY.md)**
+
+O guia inclui:
+- ✅ Configuração de PostgreSQL (Vercel Postgres)
+- ✅ Variáveis de ambiente
+- ✅ Migrations automáticas
+- ✅ Criação de admin
+- ✅ Domínio customizado
+- ✅ Troubleshooting
+
+### Desenvolvimento Local
+
+### Desenvolvimento Local
+
+Para desenvolvimento local com SQLite:
+
+```bash
+# 1. Instalar dependências
 pnpm install
 
-# Configurar banco de dados
-npx prisma generate
-npx prisma db push
-npx prisma db seed
+# 2. Usar schema SQLite para dev
+cp prisma/schema.dev.prisma prisma/schema.prisma
 
-# Iniciar servidor de desenvolvimento
+# 3. Configurar banco de dados
+pnpm prisma generate
+pnpm prisma db push
+pnpm prisma db seed
+
+# 4. Iniciar servidor de desenvolvimento
 pnpm dev
 
 # (Opcional) Abrir Prisma Studio - Interface visual do banco

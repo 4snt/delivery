@@ -16,7 +16,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
         email: customer.email,
         senha: customer.password,
         isAdmin: customer.isAdmin || false,
-      },
+      } as any,
     });
 
     return Customer.create({
@@ -24,7 +24,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: created.nome,
       email: created.email,
       password: created.senha,
-      isAdmin: created.isAdmin,
+      isAdmin: (created as any).isAdmin,
     });
   }
 
@@ -40,7 +40,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: customer.nome,
       email: customer.email,
       password: customer.senha,
-      isAdmin: customer.isAdmin,
+      isAdmin: (customer as any).isAdmin,
     });
   }
 
@@ -56,7 +56,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: customer.nome,
       email: customer.email,
       password: customer.senha,
-      isAdmin: customer.isAdmin,
+      isAdmin: (customer as any).isAdmin,
     });
   }
 
@@ -91,7 +91,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: updated.nome,
       email: updated.email,
       password: updated.senha,
-      isAdmin: updated.isAdmin,
+      isAdmin: (updated as any).isAdmin,
     });
   }
 

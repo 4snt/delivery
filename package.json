@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "test": "jest",
+    "postinstall": "prisma generate",
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
     "db:seed": "prisma db seed",
     "create-admin": "ts-node scripts/create-admin.ts"
   },
