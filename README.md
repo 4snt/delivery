@@ -1,8 +1,38 @@
 # 🍦 Sorveteria Delivery
 
-Sistema de delivery de sorvetes artesanais desenvolvido com Next.js 15, Prisma ORM e SQLite.
+Sistema de delivery de sorvetes artesanais desenvolvido com **Next.js 15**, **Prisma ORM** e **SQLite**, seguindo os princípios de **DDD (Domain-Driven Design)**, **Arquitetura Hexagonal** e **Clean Architecture**.
 
-## 🚀 Tecnologias
+> 🎓 **Projeto Acadêmico**: Este projeto foi estruturado seguindo as melhores práticas de arquitetura de software, ideal para apresentações acadêmicas e aprendizado de padrões avançados.
+
+## 🏗️ Arquitetura
+
+O projeto segue uma **arquitetura em camadas** com **inversão de dependências (SOLID)**, garantindo:
+- ✅ Separação clara de responsabilidades
+- ✅ Código testável e manutenível
+- ✅ Independência de frameworks
+- ✅ Escalabilidade e flexibilidade
+
+### � Documentação Completa
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Explicação detalhada da arquitetura DDD Hexagonal
+- **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** - Diagramas visuais das camadas
+- **[API_GUIDE.md](./API_GUIDE.md)** - Guia completo das APIs RESTful
+
+### 🎯 Camadas da Aplicação
+
+```
+src/
+├── core/                      # DOMÍNIO (independente de frameworks)
+│   ├── domain/               # Entidades e Interfaces (Ports)
+│   └── application/          # Casos de Uso (Use Cases)
+├── infrastructure/           # INFRAESTRUTURA (Adapters)
+│   ├── database/            # Repositórios (Prisma)
+│   ├── cryptography/        # Provedores (BCrypt, JWT)
+│   └── http/                # Controllers
+├── composition/             # COMPOSIÇÃO (Factories - DI)
+└── shared/                  # COMPARTILHADO (Either, Errors)
+```
+
+## �🚀 Tecnologias
 
 - **Next.js 15.5.3** - Framework React com App Router
 - **TypeScript** - Tipagem estática
@@ -12,6 +42,7 @@ Sistema de delivery de sorvetes artesanais desenvolvido com Next.js 15, Prisma O
 - **Tailwind CSS 4** - Estilização
 - **bcryptjs** - Hash de senhas
 - **JWT** - Tokens de autenticação
+- **Clean Architecture** - Padrões DDD, Hexagonal, SOLID
 
 ## 📦 Instalação
 
@@ -99,9 +130,31 @@ model PedidoAdicional {
 
 ## 🔌 API REST
 
-### Base URL
+### ⚠️ IMPORTANTE: Novas Rotas Implementadas
+
+O projeto agora possui **duas versões de API**:
+
+#### **✨ API v1 (Nova - Recomendada)**
+Segue padrões RESTful com arquitetura limpa e casos de uso.
+
 ```
-http://localhost:3000/api
+Base URL: http://localhost:3000/api/v1
+```
+
+**Rotas disponíveis:**
+- `GET/POST /api/v1/customers` - Gerenciar clientes
+- `POST /api/v1/auth/login` - Autenticação JWT
+- `GET/POST /api/v1/orders` - Gerenciar pedidos
+- `GET /api/v1/flavors` - Listar sabores
+- `GET /api/v1/additionals` - Listar adicionais
+
+📖 **[Ver documentação completa da API v1](./API_GUIDE.md)**
+
+#### **📦 API Legacy (Antiga - Depreciada)**
+Mantida por compatibilidade, mas será removida em futuras versões.
+
+```
+Base URL: http://localhost:3000/api
 ```
 
 ---
@@ -600,6 +653,41 @@ npm test -- --coverage
 
 ## 📊 Status do Projeto
 
+### ✅ Arquitetura Implementada
+
+- [x] **Domain Layer** - Entidades e interfaces do domínio
+- [x] **Application Layer** - 15+ casos de uso implementados
+- [x] **Infrastructure Layer** - Repositórios Prisma + Providers
+- [x] **Presentation Layer** - Controllers HTTP
+- [x] **Composition Layer** - Factories de injeção de dependências
+- [x] **Error Handling** - Either pattern para erros tipados
+- [x] **API v1 RESTful** - Rotas descritivas e padronizadas
+
+### 🎓 Princípios Aplicados
+
+- ✅ **SOLID** - Todos os 5 princípios
+- ✅ **Clean Architecture** - Independência de frameworks
+- ✅ **DDD** - Domain-Driven Design
+- ✅ **Hexagonal Architecture** - Ports & Adapters
+- ✅ **Dependency Inversion** - Core não depende de infraestrutura
+- ✅ **Use Cases** - Lógica de negócio isolada
+- ✅ **Repository Pattern** - Abstração de persistência
+- ✅ **Factory Pattern** - Composição de objetos
+
+### 💡 Benefícios da Nova Arquitetura
+
+#### Para Projetos Acadêmicos
+- ✨ Demonstra conhecimento avançado de arquitetura
+- 📚 Fácil de explicar (camadas bem definidas)
+- 🧪 Altamente testável
+- 📖 Bem documentado com diagramas
+
+#### Para Desenvolvimento Profissional
+- 🔄 Fácil manutenção e evolução
+- 🧩 Módulos independentes e reutilizáveis
+- 🚀 Escalável para projetos grandes
+- 🔧 Fácil trocar implementações (ex: Prisma → TypeORM)
+
 ### ✅ Funcionalidades Implementadas
 
 - [x] Sistema de autenticação completo (Google + Email/Senha)
@@ -674,4 +762,40 @@ pnpm dev
 
 ---
 
-**Desenvolvido com 💜 usando Next.js e Prisma**
+**Desenvolvido com 💜 usando Next.js, Prisma e Clean Architecture**
+
+---
+
+## 📚 Documentação Completa
+
+| Arquivo | Descrição | Tempo de Leitura |
+|---------|-----------|------------------|
+| **[QUICKSTART.md](./QUICKSTART.md)** | Guia rápido para começar | 5 min ⚡ |
+| **[ARCHITECTURE.md](./ARCHITECTURE.md)** | Arquitetura detalhada DDD Hexagonal | 30 min 🏗️ |
+| **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** | Diagramas visuais das camadas | 20 min 📊 |
+| **[API_GUIDE.md](./API_GUIDE.md)** | Guia completo das APIs v1 | 25 min 🔌 |
+| **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** | Migração Legacy → v1 | 20 min 🔄 |
+| **[SUMMARY.md](./SUMMARY.md)** | Sumário executivo do projeto | 10 min 📋 |
+| **[INDEX.md](./INDEX.md)** | Índice completo de recursos | 5 min 📖 |
+
+**Total:** ~2 horas de leitura | ~7.000 linhas de código e documentação
+
+---
+
+## 🎓 Comece Aqui
+
+### Iniciante?
+👉 **[QUICKSTART.md](./QUICKSTART.md)** - Rode em 5 minutos
+
+### Quer Entender a Arquitetura?
+👉 **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Tudo explicado
+
+### Precisa Usar a API?
+👉 **[API_GUIDE.md](./API_GUIDE.md)** - Guia completo
+
+### Apresentação Acadêmica?
+👉 **[SUMMARY.md](./SUMMARY.md)** - Sumário executivo
+
+---
+
+**Desenvolvido com 💜 usando Next.js, Prisma e Clean Architecture**
