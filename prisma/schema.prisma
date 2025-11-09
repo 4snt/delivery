@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL") // Pooled connection for queries
-  directUrl = env("POSTGRES_URL_NON_POOLED") // Direct connection for migrations
+  url      = env("POSTGRES_PRISMA_URL") // Pooled connection for queries (Neon)
+  directUrl = env("POSTGRES_URL") // Direct connection for migrations (Neon)
 }
 
 model Adicional {
