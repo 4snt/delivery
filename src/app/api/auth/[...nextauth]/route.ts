@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -35,7 +35,13 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        return { email: user.email, name: user.nome, id: user.id.toString() };
+        // Incluir isAdmin no retorno
+        return { 
+          email: user.email, 
+          name: user.nome, 
+          id: user.id.toString(),
+          isAdmin: (user as any).isAdmin || false
+        };
       },
     }),
   ],
@@ -46,11 +52,13 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
+        token.isAdmin = user.isAdmin;
       }
       return token;
     },
     async session({ session, token }: any) {
       session.user.id = token.id;
+      session.user.isAdmin = token.isAdmin;
       return session;
     },
   },
