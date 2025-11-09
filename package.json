@@ -10,7 +10,8 @@
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "create-admin": "ts-node scripts/create-admin.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.0",

@@ -34,6 +34,11 @@ export default function HeaderClient() {
                 Dashboard
               </Link>
             )}
+            {(session?.user as any)?.isAdmin && (
+              <Link href="/dashboard" className="hover:text-purple-200 transition-colors font-medium bg-white/20 px-3 py-1 rounded-lg">
+                🛠️ Admin
+              </Link>
+            )}
           </nav>
 
           {/* User Menu - Desktop */}
@@ -123,6 +128,15 @@ export default function HeaderClient() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Dashboard
+                </Link>
+              )}
+              {(session?.user as any)?.isAdmin && (
+                <Link
+                  href="/dashboard"
+                  className="hover:text-purple-200 transition-colors font-medium py-2 bg-white/20 px-3 rounded-lg"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  🛠️ Admin
                 </Link>
               )}
               <div className="border-t border-purple-500 pt-3 mt-2">

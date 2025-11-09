@@ -15,6 +15,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
         nome: customer.name,
         email: customer.email,
         senha: customer.password,
+        isAdmin: customer.isAdmin || false,
       },
     });
 
@@ -23,6 +24,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: created.nome,
       email: created.email,
       password: created.senha,
+      isAdmin: created.isAdmin,
     });
   }
 
@@ -38,6 +40,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: customer.nome,
       email: customer.email,
       password: customer.senha,
+      isAdmin: customer.isAdmin,
     });
   }
 
@@ -53,6 +56,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: customer.nome,
       email: customer.email,
       password: customer.senha,
+      isAdmin: customer.isAdmin,
     });
   }
 
@@ -65,6 +69,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
         name: customer.nome,
         email: customer.email,
         password: customer.senha,
+        isAdmin: customer.isAdmin,
       })
     );
   }
@@ -74,6 +79,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     if (data.name) updateData.nome = data.name;
     if (data.email) updateData.email = data.email;
     if (data.password) updateData.senha = data.password;
+    if (data.isAdmin !== undefined) updateData.isAdmin = data.isAdmin;
 
     const updated = await this.prisma.cliente.update({
       where: { id },
@@ -85,6 +91,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       name: updated.nome,
       email: updated.email,
       password: updated.senha,
+      isAdmin: updated.isAdmin,
     });
   }
 
