@@ -52,7 +52,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     if (!customer) return null;
 
     return Customer.create({
-      id: customer.id,
+      id: Number(customer.id),
       name: customer.nome,
       email: customer.email,
       password: customer.senha,
