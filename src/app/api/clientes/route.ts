@@ -22,7 +22,14 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 });
       }
       
-      return NextResponse.json(cliente);
+      // Converter BigInt para Number
+      const clienteResponse = {
+        id: Number(cliente.id),
+        email: cliente.email,
+        nome: cliente.nome,
+      };
+      
+      return NextResponse.json(clienteResponse);
     }
     const clientes = await prisma.cliente.findMany({
       select: {
@@ -32,9 +39,17 @@ export async function GET(request: Request) {
         // senha não é retornada
       },
     });
-    return NextResponse.json(clientes);
+    
+    // Converter BigInt para Number em todos os clientes
+    const clientesResponse = clientes.map(c => ({
+      id: Number(c.id),
+      email: c.email,
+      nome: c.nome,
+    }));
+    
+    return NextResponse.json(clientesResponse);
   } catch (error) {
-    console.error('Erro ao buscar clientes:', error);
+    console.error('[API Clientes GET] Erro ao buscar clientes:', error);
     return NextResponse.json({ error: 'Erro ao buscar clientes' }, { status: 500 });
   }
 }
@@ -43,7 +58,10 @@ export async function POST(request: Request) {
   try {
     const { nome, email, senha } = await request.json();
     
+    console.log('[API Clientes POST] Dados recebidos:', { nome, email, senhaLength: senha?.length });
+    
     if (!nome || !email || !senha) {
+      console.log('[API Clientes POST] Erro: Campos obrigatórios faltando');
       return NextResponse.json(
         { error: 'Nome, email e senha são obrigatórios' },
         { status: 400 }
@@ -56,6 +74,7 @@ export async function POST(request: Request) {
     });
 
     if (clienteExiste) {
+      console.log('[API Clientes POST] Erro: Email já existe:', email);
       return NextResponse.json(
         { error: 'Cliente com este email já existe' },
         { status: 409 }
@@ -63,6 +82,8 @@ export async function POST(request: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(senha, 10);
+    console.log('[API Clientes POST] Criando cliente no banco...');
+    
     const novoCliente = await prisma.cliente.create({
       data: {
         nome,
@@ -76,10 +97,28 @@ export async function POST(request: Request) {
         // senha não é retornada
       },
     });
-    return NextResponse.json(novoCliente, { status: 201 });
-  } catch (error) {
-    console.error('Erro ao adicionar cliente:', error);
-    return NextResponse.json({ error: 'Erro ao adicionar cliente' }, { status: 500 });
+    
+    console.log('[API Clientes POST] Cliente criado com sucesso:', novoCliente.id);
+    
+    // Converter BigInt para Number na resposta
+    const clienteResponse = {
+      id: Number(novoCliente.id),
+      email: novoCliente.email,
+      nome: novoCliente.nome,
+    };
+    
+    return NextResponse.json(clienteResponse, { status: 201 });
+  } catch (error: any) {
+    console.error('[API Clientes POST] Erro detalhado:', {
+      message: error.message,
+      code: error.code,
+      meta: error.meta,
+      stack: error.stack
+    });
+    return NextResponse.json({ 
+      error: 'Erro ao adicionar cliente',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    }, { status: 500 });
   }
 }
 
@@ -126,11 +165,13 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const id = parseInt(searchParams.get('id') as string);
+    const idParam = searchParams.get('id');
 
-    if (!id) {
+    if (!idParam) {
       return NextResponse.json({ error: "ID obrigatório" }, { status: 400 });
     }
+
+    const id = BigInt(idParam);
 
     // Verifica se o cliente existe
     const clienteExiste = await prisma.cliente.findUnique({
@@ -147,7 +188,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: "Cliente removido com sucesso" });
   } catch (error) {
-    console.error('Erro ao remover cliente:', error);
+    console.error('[API Clientes DELETE] Erro ao remover cliente:', error);
     return NextResponse.json({ error: 'Erro ao remover cliente' }, { status: 500 });
   }
 }
