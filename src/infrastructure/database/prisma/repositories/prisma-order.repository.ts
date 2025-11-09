@@ -11,7 +11,7 @@ export class PrismaOrderRepository implements IOrderRepository {
   async create(order: Order): Promise<Order> {
     const created: any = await this.prisma.pedido.create({
       data: {
-        clienteId: order.customerId,
+        clienteId: BigInt(order.customerId),
         tamanho: order.size,
         valorTotal: order.totalValue,
         formaPagamento: order.paymentMethod,
@@ -19,12 +19,12 @@ export class PrismaOrderRepository implements IOrderRepository {
         status: order.status || "Pendente",
         sabores: {
           create: order.flavorIds.map((flavorId) => ({
-            saborId: flavorId
+            saborId: BigInt(flavorId)
           })) as any,
         },
         adicionais: {
           create: order.additionalIds.map((additionalId) => ({
-            adicionalId: additionalId
+            adicionalId: BigInt(additionalId)
           })) as any,
         },
       },
@@ -35,10 +35,10 @@ export class PrismaOrderRepository implements IOrderRepository {
     });
 
     return Order.create({
-      id: created.id,
-      customerId: created.clienteId,
-      flavorIds: created.sabores.map((s: any) => s.saborId),
-      additionalIds: created.adicionais.map((a: any) => a.adicionalId),
+      id: Number(created.id),
+      customerId: Number(created.clienteId),
+      flavorIds: created.sabores.map((s: any) => Number(s.saborId)),
+      additionalIds: created.adicionais.map((a: any) => Number(a.adicionalId)),
       size: created.tamanho,
       totalValue: created.valorTotal,
       paymentMethod: created.formaPagamento,
@@ -50,7 +50,7 @@ export class PrismaOrderRepository implements IOrderRepository {
 
   async findById(id: number): Promise<Order | null> {
     const order = await this.prisma.pedido.findUnique({
-      where: { id },
+      where: { id: BigInt(id) },
       include: {
         sabores: true,
         adicionais: true,
@@ -60,10 +60,10 @@ export class PrismaOrderRepository implements IOrderRepository {
     if (!order) return null;
 
     return Order.create({
-      id: order.id,
-      customerId: order.clienteId,
-      flavorIds: order.sabores.map((s: any) => s.saborId),
-      additionalIds: order.adicionais.map((a: any) => a.adicionalId),
+      id: Number(order.id),
+      customerId: Number(order.clienteId),
+      flavorIds: order.sabores.map((s: any) => Number(s.saborId)),
+      additionalIds: order.adicionais.map((a: any) => Number(a.adicionalId)),
       size: order.tamanho,
       totalValue: order.valorTotal,
       paymentMethod: order.formaPagamento,
@@ -83,10 +83,10 @@ export class PrismaOrderRepository implements IOrderRepository {
 
     return orders.map((order: any) =>
       Order.create({
-        id: order.id,
-        customerId: order.clienteId,
-        flavorIds: order.sabores.map((s: any) => s.saborId),
-        additionalIds: order.adicionais.map((a: any) => a.adicionalId),
+        id: Number(order.id),
+        customerId: Number(order.clienteId),
+        flavorIds: order.sabores.map((s: any) => Number(s.saborId)),
+        additionalIds: order.adicionais.map((a: any) => Number(a.adicionalId)),
         size: order.tamanho,
         totalValue: order.valorTotal,
         paymentMethod: order.formaPagamento,
@@ -99,7 +99,7 @@ export class PrismaOrderRepository implements IOrderRepository {
 
   async findByCustomerId(customerId: number): Promise<Order[]> {
     const orders = await this.prisma.pedido.findMany({
-      where: { clienteId: customerId },
+      where: { clienteId: BigInt(customerId) },
       include: {
         sabores: true,
         adicionais: true,
@@ -108,10 +108,10 @@ export class PrismaOrderRepository implements IOrderRepository {
 
     return orders.map((order: any) =>
       Order.create({
-        id: order.id,
-        customerId: order.clienteId,
-        flavorIds: order.sabores.map((s: any) => s.saborId),
-        additionalIds: order.adicionais.map((a: any) => a.adicionalId),
+        id: Number(order.id),
+        customerId: Number(order.clienteId),
+        flavorIds: order.sabores.map((s: any) => Number(s.saborId)),
+        additionalIds: order.adicionais.map((a: any) => Number(a.adicionalId)),
         size: order.tamanho,
         totalValue: order.valorTotal,
         paymentMethod: order.formaPagamento,
@@ -131,7 +131,7 @@ export class PrismaOrderRepository implements IOrderRepository {
     if (data.status) updateData.status = data.status;
 
     const updated = await this.prisma.pedido.update({
-      where: { id },
+      where: { id: BigInt(id) },
       data: updateData,
       include: {
         sabores: true,
@@ -140,10 +140,10 @@ export class PrismaOrderRepository implements IOrderRepository {
     });
 
     return Order.create({
-      id: updated.id,
-      customerId: updated.clienteId,
-      flavorIds: updated.sabores.map((s: any) => s.saborId),
-      additionalIds: updated.adicionais.map((a: any) => a.adicionalId),
+      id: Number(updated.id),
+      customerId: Number(updated.clienteId),
+      flavorIds: updated.sabores.map((s: any) => Number(s.saborId)),
+      additionalIds: updated.adicionais.map((a: any) => Number(a.adicionalId)),
       size: updated.tamanho,
       totalValue: updated.valorTotal,
       paymentMethod: updated.formaPagamento,
@@ -155,7 +155,7 @@ export class PrismaOrderRepository implements IOrderRepository {
 
   async delete(id: number): Promise<void> {
     await this.prisma.pedido.delete({
-      where: { id },
+      where: { id: BigInt(id) },
     });
   }
 }

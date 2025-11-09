@@ -16,20 +16,20 @@ export class PrismaAdditionalRepository implements IAdditionalRepository {
     });
 
     return Additional.create({
-      id: created.id,
+      id: Number(created.id),
       name: created.nome,
     });
   }
 
   async findById(id: number): Promise<Additional | null> {
     const additional = await this.prisma.adicional.findUnique({
-      where: { id },
+      where: { id: BigInt(id) },
     });
 
     if (!additional) return null;
 
     return Additional.create({
-      id: additional.id,
+      id: Number(additional.id),
       name: additional.nome,
     });
   }
@@ -39,7 +39,7 @@ export class PrismaAdditionalRepository implements IAdditionalRepository {
 
     return additionals.map((additional: any) =>
       Additional.create({
-        id: additional.id,
+        id: Number(additional.id),
         name: additional.nome,
       })
     );
@@ -50,19 +50,19 @@ export class PrismaAdditionalRepository implements IAdditionalRepository {
     if (data.name) updateData.nome = data.name;
 
     const updated = await this.prisma.adicional.update({
-      where: { id },
+      where: { id: BigInt(id) },
       data: updateData,
     });
 
     return Additional.create({
-      id: updated.id,
+      id: Number(updated.id),
       name: updated.nome,
     });
   }
 
   async delete(id: number): Promise<void> {
     await this.prisma.adicional.delete({
-      where: { id },
+      where: { id: BigInt(id) },
     });
   }
 }

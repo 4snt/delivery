@@ -17,7 +17,7 @@ export class PrismaFlavorRepository implements IFlavorRepository {
     });
 
     return Flavor.create({
-      id: created.id,
+      id: Number(created.id),
       name: created.nome,
       image: created.imagem,
     });
@@ -25,13 +25,13 @@ export class PrismaFlavorRepository implements IFlavorRepository {
 
   async findById(id: number): Promise<Flavor | null> {
     const flavor = await this.prisma.sabor.findUnique({
-      where: { id },
+      where: { id: BigInt(id) },
     });
 
     if (!flavor) return null;
 
     return Flavor.create({
-      id: flavor.id,
+      id: Number(flavor.id),
       name: flavor.nome,
       image: flavor.imagem,
     });
@@ -42,7 +42,7 @@ export class PrismaFlavorRepository implements IFlavorRepository {
 
     return flavors.map((flavor: any) =>
       Flavor.create({
-        id: flavor.id,
+        id: Number(flavor.id),
         name: flavor.nome,
         image: flavor.imagem,
       })
@@ -55,12 +55,12 @@ export class PrismaFlavorRepository implements IFlavorRepository {
     if (data.image) updateData.imagem = data.image;
 
     const updated = await this.prisma.sabor.update({
-      where: { id },
+      where: { id: BigInt(id) },
       data: updateData,
     });
 
     return Flavor.create({
-      id: updated.id,
+      id: Number(updated.id),
       name: updated.nome,
       image: updated.imagem,
     });
@@ -68,7 +68,7 @@ export class PrismaFlavorRepository implements IFlavorRepository {
 
   async delete(id: number): Promise<void> {
     await this.prisma.sabor.delete({
-      where: { id },
+      where: { id: BigInt(id) },
     });
   }
 }

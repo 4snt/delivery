@@ -20,7 +20,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     });
 
     return Customer.create({
-      id: created.id,
+      id: Number(created.id),
       name: created.nome,
       email: created.email,
       password: created.senha,
@@ -30,13 +30,13 @@ export class PrismaCustomerRepository implements ICustomerRepository {
 
   async findById(id: number): Promise<Customer | null> {
     const customer = await this.prisma.cliente.findUnique({
-      where: { id },
+      where: { id: BigInt(id) },
     });
 
     if (!customer) return null;
 
     return Customer.create({
-      id: customer.id,
+      id: Number(customer.id),
       name: customer.nome,
       email: customer.email,
       password: customer.senha,
@@ -65,7 +65,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
 
     return customers.map((customer: any) =>
       Customer.create({
-        id: customer.id,
+        id: Number(customer.id),
         name: customer.nome,
         email: customer.email,
         password: customer.senha,
@@ -82,12 +82,12 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     if (data.isAdmin !== undefined) updateData.isAdmin = data.isAdmin;
 
     const updated = await this.prisma.cliente.update({
-      where: { id },
+      where: { id: BigInt(id) },
       data: updateData,
     });
 
     return Customer.create({
-      id: updated.id,
+      id: Number(updated.id),
       name: updated.nome,
       email: updated.email,
       password: updated.senha,
@@ -97,7 +97,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
 
   async delete(id: number): Promise<void> {
     await this.prisma.cliente.delete({
-      where: { id },
+      where: { id: BigInt(id) },
     });
   }
 }
