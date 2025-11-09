@@ -9,20 +9,20 @@ datasource db {
 }
 
 model Adicional {
-  id    Int     @id @default(autoincrement())
+  id    BigInt     @id @default(autoincrement())
   nome  String
   pedidos PedidoAdicional[]
 }
 
 model Sabor {
-  id    Int     @id @default(autoincrement())
+  id    BigInt     @id @default(autoincrement())
   nome  String
   imagem String
   pedidos PedidoSabor[]
 }
 
 model Cliente {
-  id        Int      @id @default(autoincrement())
+  id        BigInt      @id @default(autoincrement())
   email     String   @unique
   nome      String
   senha     String
@@ -31,9 +31,9 @@ model Cliente {
 }
 
 model Pedido {
-  id          Int      @id @default(autoincrement())
+  id          BigInt      @id @default(autoincrement())
   cliente     Cliente  @relation(fields: [clienteId], references: [id])
-  clienteId   Int
+  clienteId   BigInt
   sabores     PedidoSabor[]
   adicionais  PedidoAdicional[]
   tamanho     String
@@ -46,18 +46,18 @@ model Pedido {
 
 model PedidoSabor {
   pedido    Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
-  pedidoId  Int
+  pedidoId  BigInt
   sabor     Sabor  @relation(fields: [saborId], references: [id], onDelete: Cascade)
-  saborId   Int
+  saborId   BigInt
 
   @@id([pedidoId, saborId])
 }
 
 model PedidoAdicional {
   pedido       Pedido    @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
-  pedidoId     Int
+  pedidoId     BigInt
   adicional    Adicional @relation(fields: [adicionalId], references: [id], onDelete: Cascade)
-  adicionalId  Int
+  adicionalId  BigInt
 
   @@id([pedidoId, adicionalId])
 }
