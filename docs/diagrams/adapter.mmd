@@ -1,0 +1,32 @@
+%%{init: {'theme': 'neutral', 'themeVariables': { 'primaryColor': '#fdf2ff', 'primaryBorderColor': '#9333ea', 'primaryTextColor': '#2d0a4e', 'secondaryColor': '#ede9fe', 'lineColor': '#7c3aed', 'fontFamily': 'Inter', 'background': 'transparent' }, 'flowchart': { 'defaultRenderer': 'elk', 'nodeSpacing': 40, 'rankSpacing': 60 }}}%%
+flowchart LR
+    subgraph Entrada
+        direction TB
+        request["Next.js Route Handler\nPOST /api/v1/customers"]
+        adapter["CustomerController.create\n(Adapter de entrada)"]
+        request --> adapter
+    end
+
+    subgraph Dominio
+        direction TB
+        usecase["CreateCustomerUseCase\n(Regras de aplicação)"]
+        port["ICustomerRepository\n(Porto de domínio)"]
+        usecase --> port
+    end
+
+    subgraph Saida
+        direction TB
+        repo["PrismaCustomerRepository\n(Adapter de saída)"]
+        db[("PostgreSQL\nBanco de dados")]
+        repo --> db
+    end
+
+    adapter --> usecase
+    port -.->|implementa| repo
+
+    style request fill:#ede9fe,stroke:#9333ea,color:#2d0a4e,stroke-width:2px
+    style adapter fill:#fdf2ff,stroke:#9333ea,color:#2d0a4e,stroke-width:2px
+    style usecase fill:#f5d0fe,stroke:#7c3aed,color:#2d0a4e,stroke-width:2px
+    style port fill:#ede9fe,stroke-dasharray:5 3,stroke:#7c3aed,color:#2d0a4e,stroke-width:2px
+    style repo fill:#fdf2ff,stroke:#9333ea,color:#2d0a4e,stroke-width:2px
+    style db fill:#ede9fe,stroke:#9333ea,color:#2d0a4e,stroke-width:2px

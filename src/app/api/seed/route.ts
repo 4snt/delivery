@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     const saboresData = JSON.parse(fs.readFileSync(saboresPath, 'utf-8'));
 
     // Inserir adicionais
-    console.log(`📦 Inserindo ${adicionaisData.length} adicionais...`);
+    console.log(`Inserindo ${adicionaisData.length} adicionais...`);
     for (const adicional of adicionaisData) {
       await prisma.adicional.upsert({
         where: { id: BigInt(adicional.id) } as any,
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     }
 
     // Inserir sabores
-    console.log(`🍕 Inserindo ${saboresData.length} sabores...`);
+    console.log(`Inserindo ${saboresData.length} sabores...`);
     for (const sabor of saboresData) {
       await prisma.sabor.upsert({
         where: { id: BigInt(sabor.id) } as any,
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
       } as any,
     });
 
-    console.log('✅ Seed concluído com sucesso!');
+    console.log('Seed concluído com sucesso!');
 
     return NextResponse.json({
       success: true,

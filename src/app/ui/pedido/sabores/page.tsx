@@ -124,7 +124,7 @@ export default function SaboresPage() {
                   ) : (
                     <div className="text-center p-4">
                       <div className="w-16 h-16 mx-auto mb-2 bg-gradient-to-br from-purple-300 to-green-300 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">🍦</span>
+                        <span className="text-2xl"></span>
                       </div>
                       <p className="text-sm text-gray-600">Imagem em breve</p>
                     </div>

@@ -40,7 +40,50 @@ Este guia ajuda na migração das rotas antigas (`/api/*`) para as novas rotas R
 | `GET /api/sabores` | `GET /api/v1/flavors` | GET | Nome em inglês |
 | `POST /api/sabores` | N/A | POST | Removido da API pública |
 | `DELETE /api/sabores?id={id}` | N/A | DELETE | Removido da API pública |
-| N/A | `GET /api/v1/flavors/{id}` | GET | **Nova funcionalidade** |
+```markdown
+# Guia de Migração - API Legacy → API v1
+
+## Visão Geral
+
+Este guia ajuda na migração das rotas antigas (`/api/*`) para as novas rotas RESTful (`/api/v1/*`) que seguem Clean Architecture.
+
+## Mapeamento de Rotas
+
+### Clientes (Customers)
+
+| Antiga (Legacy) | Nova (v1) | Método | Mudanças |
+|----------------|-----------|--------|----------|
+| `GET /api/clientes` | `GET /api/v1/customers` | GET | Nome em inglês |
+| `GET /api/clientes?email={email}` | `GET /api/v1/customers?email={email}` | GET | Mesma estrutura |
+| `POST /api/clientes` | `POST /api/v1/customers` | POST | Mesma estrutura |
+| `PUT /api/clientes` | `PUT /api/v1/customers` | PUT | Mesma estrutura |
+| `DELETE /api/clientes?id={id}` | `DELETE /api/v1/customers/{id}` | DELETE | ID na rota |
+
+### Autenticação (Authentication)
+
+| Antiga (Legacy) | Nova (v1) | Método | Mudanças |
+|----------------|-----------|--------|----------|
+| `POST /api/jwt/login` | `POST /api/v1/auth/login` | POST | Rota simplificada |
+
+### Pedidos (Orders)
+
+| Antiga (Legacy) | Nova (v1) | Método | Mudanças |
+|----------------|-----------|--------|----------|
+| `GET /api/pedidos` | `GET /api/v1/orders` | GET | Nome em inglês |
+| `POST /api/pedidos` | `POST /api/v1/orders` | POST | Nome em inglês |
+| `PUT /api/pedidos` | `PUT /api/v1/orders` | PUT | Removido |
+| `DELETE /api/pedidos?id={id}` | `DELETE /api/v1/orders/{id}` | DELETE | ID na rota |
+| N/A | `GET /api/v1/orders?customerId={id}` | GET | Nova funcionalidade |
+| N/A | `GET /api/v1/orders/{id}` | GET | Nova funcionalidade |
+
+### Sabores (Flavors)
+
+| Antiga (Legacy) | Nova (v1) | Método | Mudanças |
+|----------------|-----------|--------|----------|
+| `GET /api/sabores` | `GET /api/v1/flavors` | GET | Nome em inglês |
+| `POST /api/sabores` | N/A | POST | Removido da API pública |
+| `DELETE /api/sabores?id={id}` | N/A | DELETE | Removido da API pública |
+| N/A | `GET /api/v1/flavors/{id}` | GET | Nova funcionalidade |
 
 ### Adicionais (Additionals)
 
@@ -49,11 +92,11 @@ Este guia ajuda na migração das rotas antigas (`/api/*`) para as novas rotas R
 | `GET /api/adicionais` | `GET /api/v1/additionals` | GET | Nome em inglês |
 | `POST /api/adicionais` | N/A | POST | Removido da API pública |
 | `DELETE /api/adicionais?id={id}` | N/A | DELETE | Removido da API pública |
-| N/A | `GET /api/v1/additionals/{id}` | GET | **Nova funcionalidade** |
+| N/A | `GET /api/v1/additionals/{id}` | GET | Nova funcionalidade |
 
 ---
 
-## 📝 Exemplos de Migração
+## Exemplos de Migração
 
 ### 1. Criar Cliente
 
@@ -82,8 +125,8 @@ Content-Type: application/json
 ```
 
 **Mudanças:**
-- ✅ Rota: `/clientes` → `/customers`
-- ✅ Campos: `nome` → `name`, `senha` → `password`
+- Rota: `/clientes` → `/customers`
+- Campos: `nome` → `name`, `senha` → `password`
 
 ---
 
@@ -100,8 +143,8 @@ DELETE /api/v1/customers/1
 ```
 
 **Mudanças:**
-- ✅ Query param `?id=1` → Path param `/1`
-- ✅ Mais RESTful e semântico
+- Query param `?id=1` → Path param `/1`
+- Mais RESTful e semântico
 
 ---
 
@@ -149,9 +192,9 @@ Content-Type: application/json
 ```
 
 **Mudanças:**
-- ✅ Rota: `/jwt/login` → `/auth/login`
-- ✅ Agora valida senha (mais seguro)
-- ✅ Retorna informações do cliente junto com token
+- Rota: `/jwt/login` → `/auth/login`
+- Agora valida senha (mais seguro)
+- Retorna informações do cliente junto com token
 
 ---
 
@@ -195,14 +238,14 @@ Content-Type: application/json
 ```
 
 **Mudanças:**
-- ✅ Campos em inglês (camelCase)
-- ✅ `sabores: [{ id: 4 }]` → `flavorIds: [4]` (mais simples)
-- ✅ `adicionais: [{ id: 11 }]` → `additionalIds: [11]`
-- ✅ Campos: `clienteId` → `customerId`, `tamanho` → `size`, etc.
+- Campos em inglês (camelCase)
+- `sabores: [{ id: 4 }]` → `flavorIds: [4]` (mais simples)
+- `adicionais: [{ id: 11 }]` → `additionalIds: [11]`
+- Campos: `clienteId` → `customerId`, `tamanho` → `size`, etc.
 
 ---
 
-## 🔧 Mudanças no Frontend
+## Mudanças no Frontend
 
 ### Atualizar Chamadas de API
 
@@ -288,7 +331,7 @@ const orders = await fetch(API_ENDPOINTS.orders.byCustomer(1));
 
 ---
 
-## ⚠️ Breaking Changes
+## Breaking Changes
 
 ### 1. Estrutura de Resposta de Erro
 Antes era inconsistente, agora é padronizada:
@@ -332,7 +375,7 @@ Depois: DELETE /api/v1/customers/1
 
 ---
 
-## ✅ Checklist de Migração
+## Checklist de Migração
 
 - [ ] Atualizar todas as chamadas de API para `/api/v1/*`
 - [ ] Renomear campos para inglês (camelCase)
@@ -345,7 +388,7 @@ Depois: DELETE /api/v1/customers/1
 
 ---
 
-## 🧪 Testando a Migração
+## Testando a Migração
 
 ### 1. Teste Paralelo
 Execute ambas as APIs simultaneamente para comparar:
@@ -370,7 +413,7 @@ npm test
 
 ---
 
-## 📚 Recursos Adicionais
+## Recursos Adicionais
 
 - [Documentação completa da API v1](./API_GUIDE.md)
 - [Arquitetura do projeto](./ARCHITECTURE.md)
@@ -378,7 +421,7 @@ npm test
 
 ---
 
-## 🆘 Suporte
+## Suporte
 
 Se encontrar problemas na migração:
 1. Verifique os logs do servidor
@@ -387,4 +430,6 @@ Se encontrar problemas na migração:
 
 ---
 
-**💡 Dica:** Mantenha a API legacy funcionando durante o período de migração para garantir zero downtime.
+**Dica:** Mantenha a API legacy funcionando durante o período de migração para garantir zero downtime.
+
+````

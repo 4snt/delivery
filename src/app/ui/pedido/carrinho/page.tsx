@@ -27,7 +27,7 @@ export default function CarrinhoPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-purple-700 mb-2">
-              🛒 Seu Carrinho
+              Seu Carrinho
             </h1>
             <p className="text-gray-600">
               Revise seu pedido antes de finalizar
@@ -36,7 +36,7 @@ export default function CarrinhoPage() {
 
           {pedido.potes.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-6xl mb-4">🍦</div>
+              <div className="text-6xl mb-4"></div>
               <p className="text-gray-500 text-xl mb-6">
                 Seu carrinho está vazio
               </p>
@@ -137,7 +137,7 @@ export default function CarrinhoPage() {
                   disabled={pedido.potes.length === 0}
                   className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-300 disabled:to-gray-400 text-white py-4 rounded-xl text-lg font-bold shadow-lg transition-all disabled:cursor-not-allowed"
                 >
-                  Finalizar Pedido 🎉
+                  Finalizar Pedido
                 </button>
               </div>
             </>

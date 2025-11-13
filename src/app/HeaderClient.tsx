@@ -16,7 +16,7 @@ export default function HeaderClient() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <span className="text-2xl">🍦</span>
+              <span className="text-2xl"></span>
             </div>
             <span className="font-bold text-xl hidden sm:block">Sorveteria</span>
           </Link>

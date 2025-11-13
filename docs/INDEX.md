@@ -5,18 +5,26 @@
 | Arquivo | Tamanho | Descrição | Para Quem |
 |---------|---------|-----------|-----------|
 | **[QUICKSTART.md](./QUICKSTART.md)** | 5 min | Guia rápido de início | 🏃 Iniciantes |
-| **[README.md](./README.md)** | 15 min | Visão geral completa | 👥 Todos |
-| **[ARCHITECTURE.md](./ARCHITECTURE.md)** | 30 min | Arquitetura detalhada | 🎓 Estudantes/Arquitetos |
-| **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** | 20 min | Diagramas visuais | 👀 Visuais |
-| **[API_GUIDE.md](./API_GUIDE.md)** | 25 min | Guia completo da API | 🔌 Desenvolvedores Frontend |
-| **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** | 20 min | Migração Legacy → v1 | 🔄 Time de Manutenção |
-| **[SUMMARY.md](./SUMMARY.md)** | 10 min | Sumário executivo | 👔 Gestores/Apresentações |
+```markdown
+# Índice de Recursos - Delivery System
+
+## Documentação
+
+| Arquivo | Tamanho | Descrição | Para Quem |
+|---------|---------|-----------|-----------|
+| **[QUICKSTART.md](./QUICKSTART.md)** | 5 min | Guia rápido de início | Iniciantes |
+| **[README.md](./README.md)** | 15 min | Visão geral completa | Todos |
+| **[ARCHITECTURE.md](./ARCHITECTURE.md)** | 30 min | Arquitetura detalhada | Estudantes/Arquitetos |
+| **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** | 20 min | Diagramas visuais | Visuais |
+| **[API_GUIDE.md](./API_GUIDE.md)** | 25 min | Guia completo da API | Desenvolvedores Frontend |
+| **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** | 20 min | Migração Legacy → v1 | Time de Manutenção |
+| **[SUMMARY.md](./SUMMARY.md)** | 10 min | Sumário executivo | Gestores/Apresentações |
 
 **Total:** ~2.500 linhas de documentação
 
 ---
 
-## 🏗️ Estrutura de Código
+## Estrutura de Código
 
 ### Core (Domínio + Aplicação)
 
@@ -155,7 +163,7 @@ src/app/api/v1/
 
 ---
 
-## 📊 Estatísticas do Projeto
+## Estatísticas do Projeto
 
 ### Arquivos Criados
 - **Domain Layer:** 10 arquivos
@@ -199,33 +207,33 @@ src/app/api/v1/
 
 ---
 
-## 🎯 Padrões Implementados
+## Padrões Implementados
 
 ### Design Patterns
-- ✅ Repository Pattern
-- ✅ Use Case Pattern
-- ✅ Factory Pattern
-- ✅ Adapter Pattern
-- ✅ Entity Pattern
-- ✅ Either Pattern (Functional)
+- Repository Pattern
+- Use Case Pattern
+- Factory Pattern
+- Adapter Pattern
+- Entity Pattern
+- Either Pattern (Functional)
 
 ### Architectural Patterns
-- ✅ Clean Architecture
-- ✅ Hexagonal Architecture (Ports & Adapters)
-- ✅ Domain-Driven Design (DDD)
-- ✅ Layered Architecture
-- ✅ Dependency Inversion
+- Clean Architecture
+- Hexagonal Architecture (Ports & Adapters)
+- Domain-Driven Design (DDD)
+- Layered Architecture
+- Dependency Inversion
 
 ### SOLID Principles
-- ✅ Single Responsibility
-- ✅ Open/Closed
-- ✅ Liskov Substitution
-- ✅ Interface Segregation
-- ✅ Dependency Inversion
+- Single Responsibility
+- Open/Closed
+- Liskov Substitution
+- Interface Segregation
+- Dependency Inversion
 
 ---
 
-## 🔌 API Endpoints Completa
+## API Endpoints Completa
 
 ### Customers (6 endpoints)
 ```
@@ -265,7 +273,7 @@ POST   /api/v1/auth/login             # Autenticar
 
 ---
 
-## 🧪 Testes
+## Testes
 
 ### Estrutura de Testes (Planejado)
 ```
@@ -290,7 +298,7 @@ tests/
 
 ---
 
-## 📦 Dependências
+## Dependências
 
 ### Produção
 ```json
@@ -322,7 +330,7 @@ tests/
 
 ---
 
-## 🎓 Recursos para Aprendizado
+## Recursos para Aprendizado
 
 ### Livros Seguidos
 1. **Clean Architecture** - Robert C. Martin (Uncle Bob)
@@ -341,7 +349,7 @@ tests/
 
 ---
 
-## 🚀 Comandos Úteis
+## Comandos Úteis
 
 ### Desenvolvimento
 ```bash
@@ -368,36 +376,36 @@ npx prisma migrate reset  # Reseta banco
 
 ---
 
-## 📖 Guia de Leitura Recomendado
+## Guia de Leitura Recomendado
 
 ### Para Iniciantes
-1. ⚡ **[QUICKSTART.md](./QUICKSTART.md)** (5 min)
-2. 📖 **[README.md](./README.md)** - Seção "Arquitetura" (10 min)
-3. 👀 **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** (15 min)
-4. 🔌 **[API_GUIDE.md](./API_GUIDE.md)** - Exemplos básicos (10 min)
+1. **[QUICKSTART.md](./QUICKSTART.md)** (5 min)
+2. **[README.md](./README.md)** - Seção "Arquitetura" (10 min)
+3. **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** (15 min)
+4. **[API_GUIDE.md](./API_GUIDE.md)** - Exemplos básicos (10 min)
 
 **Total:** ~40 minutos
 
 ### Para Estudantes/Acadêmicos
-1. 📚 **[ARCHITECTURE.md](./ARCHITECTURE.md)** completo (30 min)
-2. 👀 **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** (20 min)
-3. 📊 **[SUMMARY.md](./SUMMARY.md)** (10 min)
+1. **[ARCHITECTURE.md](./ARCHITECTURE.md)** completo (30 min)
+2. **[ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)** (20 min)
+3. **[SUMMARY.md](./SUMMARY.md)** (10 min)
 4. Estudar código de 2-3 Use Cases (30 min)
 
 **Total:** ~90 minutos
 
 ### Para Desenvolvedores Profissionais
-1. 📖 **[README.md](./README.md)** - Visão geral (5 min)
-2. 🏗️ **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Foco em padrões (15 min)
-3. 🔌 **[API_GUIDE.md](./API_GUIDE.md)** - Todos os endpoints (15 min)
-4. 🔄 **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** (15 min)
+1. **[README.md](./README.md)** - Visão geral (5 min)
+2. **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Foco em padrões (15 min)
+3. **[API_GUIDE.md](./API_GUIDE.md)** - Todos os endpoints (15 min)
+4. **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** (15 min)
 5. Análise de código completa (60 min)
 
 **Total:** ~2 horas
 
 ---
 
-## 🎯 Checklist de Uso
+## Checklist de Uso
 
 ### Primeiro Uso
 - [ ] Ler QUICKSTART.md
@@ -421,7 +429,7 @@ npx prisma migrate reset  # Reseta banco
 
 ---
 
-## 💼 Uso Profissional
+## Uso Profissional
 
 ### Para Apresentações
 - Use **SUMMARY.md** como base
@@ -443,7 +451,7 @@ npx prisma migrate reset  # Reseta banco
 
 ---
 
-## 📞 Suporte
+## Suporte
 
 ### Documentação
 - Todos os arquivos .md na raiz do projeto
@@ -457,19 +465,21 @@ npx prisma migrate reset  # Reseta banco
 
 ---
 
-## 🎉 Parabéns!
+## Parabéns!
 
 Você tem acesso a:
-- ✅ 62 arquivos de código limpo
-- ✅ 7 documentos completos
-- ✅ 18 casos de uso
-- ✅ 17 endpoints RESTful
-- ✅ Arquitetura enterprise
-- ✅ Padrões SOLID
-- ✅ 100% TypeScript
+- 62 arquivos de código limpo
+- 7 documentos completos
+- 18 casos de uso
+- 17 endpoints RESTful
+- Arquitetura enterprise
+- Padrões SOLID
+- 100% TypeScript
 
-**Explore, aprenda e evolua! 🚀**
+**Explore, aprenda e evolua!**
 
 ---
 
 **Última atualização:** 09/11/2025
+
+````

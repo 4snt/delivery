@@ -48,7 +48,7 @@ export function DashboardStats({
       <StatsCard
         title="Total de Pedidos"
         value={totalOrders}
-        icon="📦"
+        icon=""
         color="blue"
       />
       <StatsCard
@@ -60,7 +60,7 @@ export function DashboardStats({
       <StatsCard
         title="Sabores"
         value={totalFlavors}
-        icon="🍦"
+        icon=""
         color="yellow"
       />
       <StatsCard

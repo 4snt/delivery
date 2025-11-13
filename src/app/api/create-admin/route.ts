@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 /**
  * API para criar admin em produção
- * ⚠️ REMOVER APÓS CRIAR O PRIMEIRO ADMIN
+ * REMOVER APÓS CRIAR O PRIMEIRO ADMIN
  */
 export async function POST(request: Request) {
   try {

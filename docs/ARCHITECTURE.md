@@ -146,6 +146,113 @@ src/
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## 🗺️ Diagramas Mermaid
+
+### Arquitetura em Camadas (Ports & Adapters)
+
+```mermaid
+flowchart LR
+    subgraph Presentation["Presentation (Next.js Routes + Controllers)"]
+        route["Route Handler\n/api/v1/*"]
+        controller["CustomerController\nOrderController\nAuthController"]
+    end
+    subgraph Application["Application (Use Cases)"]
+        usecase["Use Cases\nCreateCustomer | AuthenticateCustomer\nCreateOrder | ListFlavors"]
+    end
+    subgraph Domain["Domain (Entities + Ports)"]
+        entities["Entities\nCustomer | Order | Flavor | Additional"]
+        ports["Ports\nICustomerRepository\nIOrderRepository\nIHashProvider"]
+    end
+    subgraph Infrastructure["Infrastructure (Adapters)"]
+        repo["Prisma*Repository"]
+        crypto["BCryptHashProvider\nJWTTokenProvider"]
+    end
+    subgraph Data["Data Access"]
+        prisma["Prisma Client"]
+        db["PostgreSQL"]
+    end
+
+    route --> controller --> usecase
+    usecase --> entities
+    usecase --> ports
+    ports --> repo --> prisma --> db
+    usecase --> crypto
+```
+
+### Sequência: POST /api/v1/customers
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Route as Next.js Route
+    participant Controller as CustomerController
+    participant Factory as Factory/DI
+    participant UseCase as CreateCustomerUseCase
+    participant Repo as PrismaCustomerRepository
+    participant Prisma as PrismaClient
+    participant DB as PostgreSQL
+
+    Client->>Route: POST /api/v1/customers (name, email, password)
+    Route->>Controller: create(request)
+    Controller->>Factory: makeCreateCustomerUseCase()
+    Factory-->>Controller: useCase
+    Controller->>UseCase: execute(dto)
+    UseCase->>Repo: create(Customer)
+    Repo->>Prisma: cliente.create(data)
+    Prisma->>DB: INSERT cliente
+    DB-->>Prisma: persisted row
+    Prisma-->>Repo: created record
+    Repo-->>UseCase: Customer entity
+    UseCase-->>Controller: Either Right(Customer)
+    Controller-->>Client: 201 + JSON body
+```
+
+### Modelo Relacional (Prisma/PostgreSQL)
+
+```mermaid
+erDiagram
+    Cliente ||--o{ Pedido : "possui"
+    Pedido }o--o{ PedidoSabor : "usa sabores"
+    Pedido }o--o{ PedidoAdicional : "usa adicionais"
+    Sabor ||--o{ PedidoSabor : "participa"
+    Adicional ||--o{ PedidoAdicional : "participa"
+
+    Cliente {
+        BigInt id
+        String nome
+        String email
+        String senha
+        Boolean isAdmin
+    }
+    Pedido {
+        BigInt id
+        BigInt clienteId
+        String tamanho
+        Float valorTotal
+        String formaPagamento
+        String enderecoEntrega
+        String status
+        DateTime createdAt
+    }
+    Sabor {
+        BigInt id
+        String nome
+        String imagem
+    }
+    Adicional {
+        BigInt id
+        String nome
+    }
+    PedidoSabor {
+        BigInt pedidoId
+        BigInt saborId
+    }
+    PedidoAdicional {
+        BigInt pedidoId
+        BigInt adicionalId
+    }
+```
+
 ## 📍 Rotas API (RESTful)
 
 ### Customers (Clientes)

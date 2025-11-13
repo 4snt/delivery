@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 900px;
+    height: 900px;
+    background: transparent;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #diagram-container {
+    width: 90%;
+    height: 90%;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+</head>
+<body>
+<div id="diagram-container"></div>
+<div id="diagram-data" data-diagram="JSV7aW5pdDogeyd0aGVtZSc6ICduZXV0cmFsJywgJ3RoZW1lVmFyaWFibGVzJzogeyAncHJpbWFyeUNvbG9yJzogJyNmZGYyZmYnLCAncHJpbWFyeUJvcmRlckNvbG9yJzogJyM5MzMzZWEnLCAncHJpbWFyeVRleHRDb2xvcic6ICcjMmQwYTRlJywgJ3NlY29uZGFyeUNvbG9yJzogJyNlZGU5ZmUnLCAnbGluZUNvbG9yJzogJyM3YzNhZWQnLCAnZm9udEZhbWlseSc6ICdJbnRlcicsICdiYWNrZ3JvdW5kJzogJ3RyYW5zcGFyZW50JyB9LCAnZmxvd2NoYXJ0JzogeyAnZGVmYXVsdFJlbmRlcmVyJzogJ2VsaycsICdub2RlU3BhY2luZyc6IDQwLCAncmFua1NwYWNpbmcnOiA2MCB9fX0lJQpmbG93Y2hhcnQgTFIKICAgIHN1YmdyYXBoIEVudHJhZGEKICAgICAgICBkaXJlY3Rpb24gVEIKICAgICAgICByZXF1ZXN0WyJOZXh0LmpzIFJvdXRlIEhhbmRsZXJcblBPU1QgL2FwaS92MS9jdXN0b21lcnMiXQogICAgICAgIGFkYXB0ZXJbIkN1c3RvbWVyQ29udHJvbGxlci5jcmVhdGVcbihBZGFwdGVyIGRlIGVudHJhZGEpIl0KICAgICAgICByZXF1ZXN0IC0tPiBhZGFwdGVyCiAgICBlbmQKCiAgICBzdWJncmFwaCBEb21pbmlvCiAgICAgICAgZGlyZWN0aW9uIFRCCiAgICAgICAgdXNlY2FzZVsiQ3JlYXRlQ3VzdG9tZXJVc2VDYXNlXG4oUmVncmFzIGRlIGFwbGljYcOnw6NvKSJdCiAgICAgICAgcG9ydFsiSUN1c3RvbWVyUmVwb3NpdG9yeVxuKFBvcnRvIGRlIGRvbcOtbmlvKSJdCiAgICAgICAgdXNlY2FzZSAtLT4gcG9ydAogICAgZW5kCgogICAgc3ViZ3JhcGggU2FpZGEKICAgICAgICBkaXJlY3Rpb24gVEIKICAgICAgICByZXBvWyJQcmlzbWFDdXN0b21lclJlcG9zaXRvcnlcbihBZGFwdGVyIGRlIHNhw61kYSkiXQogICAgICAgIGRiWygiUG9zdGdyZVNRTFxuQmFuY28gZGUgZGFkb3MiKV0KICAgICAgICByZXBvIC0tPiBkYgogICAgZW5kCgogICAgYWRhcHRlciAtLT4gdXNlY2FzZQogICAgcG9ydCAtLi0+fGltcGxlbWVudGF8IHJlcG8KCiAgICBzdHlsZSByZXF1ZXN0IGZpbGw6I2VkZTlmZSxzdHJva2U6IzkzMzNlYSxjb2xvcjojMmQwYTRlLHN0cm9rZS13aWR0aDoycHgKICAgIHN0eWxlIGFkYXB0ZXIgZmlsbDojZmRmMmZmLHN0cm9rZTojOTMzM2VhLGNvbG9yOiMyZDBhNGUsc3Ryb2tlLXdpZHRoOjJweAogICAgc3R5bGUgdXNlY2FzZSBmaWxsOiNmNWQwZmUsc3Ryb2tlOiM3YzNhZWQsY29sb3I6IzJkMGE0ZSxzdHJva2Utd2lkdGg6MnB4CiAgICBzdHlsZSBwb3J0IGZpbGw6I2VkZTlmZSxzdHJva2UtZGFzaGFycmF5OjUgMyxzdHJva2U6IzdjM2FlZCxjb2xvcjojMmQwYTRlLHN0cm9rZS13aWR0aDoycHgKICAgIHN0eWxlIHJlcG8gZmlsbDojZmRmMmZmLHN0cm9rZTojOTMzM2VhLGNvbG9yOiMyZDBhNGUsc3Ryb2tlLXdpZHRoOjJweAogICAgc3R5bGUgZGIgZmlsbDojZWRlOWZlLHN0cm9rZTojOTMzM2VhLGNvbG9yOiMyZDBhNGUsc3Ryb2tlLXdpZHRoOjJweAo="></div>
+<script src="../../node_modules/mermaid/dist/mermaid.min.js"></script>
+<script>
+  const source = atob(document.getElementById('diagram-data').dataset.diagram);
+  mermaid.initialize({ startOnLoad: false });
+  mermaid.render('graphDiv', source).then(({ svg }) => {
+    document.getElementById('diagram-container').innerHTML = svg;
+  });
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@ export function CartSummary() {
   if (cart.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-6 text-center">
-        <p className="text-gray-600 mb-4">🛒 Seu carrinho está vazio</p>
+        <p className="text-gray-600 mb-4">Seu carrinho está vazio</p>
         <Button onClick={() => router.push('/ui/pedido/tamanho')}>
           Começar Pedido
         </Button>

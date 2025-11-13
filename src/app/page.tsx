@@ -15,7 +15,7 @@ export default function Home() {
             Sorveteria Delivery
           </h1>
           <p className="text-xl md:text-2xl text-gray-700 mb-8">
-            Os melhores sorvetes artesanais direto na sua casa! 🍦
+            Os melhores sorvetes artesanais direto na sua casa!
           </p>
           <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
             Escolha seus sabores favoritos, personalize com adicionais deliciosos e receba tudo fresquinho em minutos.
@@ -26,7 +26,7 @@ export default function Home() {
               onClick={() => router.push("/ui/pedido/tamanho")}
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-xl text-xl font-bold shadow-xl transition-all duration-300 transform hover:scale-105"
             >
-              🎉 Fazer Pedido
+              Fazer Pedido
             </button>
             
             {!session && (
@@ -65,7 +65,7 @@ export default function Home() {
           </div>
 
           <div className="bg-white rounded-2xl p-8 shadow-lg text-center transform transition-all hover:scale-105">
-            <div className="text-5xl mb-4">✨</div>
+            <div className="text-5xl mb-4"></div>
             <h3 className="text-2xl font-bold text-purple-700 mb-3">
               Personalize Tudo
             </h3>
@@ -89,7 +89,7 @@ export default function Home() {
             onClick={() => router.push("/ui/pedido/tamanho")}
             className="bg-white text-purple-600 px-10 py-4 rounded-xl text-xl font-bold shadow-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
           >
-            Começar Agora 🚀
+            Começar Agora
           </button>
         </div>
       </section>

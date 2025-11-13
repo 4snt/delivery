@@ -66,7 +66,7 @@ export default function CadastroClientePage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 text-center">
-          <div className="text-6xl mb-4">✅</div>
+          <div className="text-6xl mb-4"></div>
           <h1 className="text-3xl font-bold mb-4 text-green-600">Conta criada com sucesso!</h1>
           <p className="text-gray-600 mb-6">Redirecionando para o login...</p>
         </div>

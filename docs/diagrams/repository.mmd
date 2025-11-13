@@ -1,0 +1,33 @@
+%%{init: {'theme': 'neutral', 'themeVariables': { 'primaryColor': '#fdf2ff', 'primaryBorderColor': '#9333ea', 'primaryTextColor': '#2d0a4e', 'secondaryColor': '#ede9fe', 'tertiaryColor': '#ede9fe', 'lineColor': '#7c3aed', 'fontFamily': 'Inter', 'background': 'transparent' }}}%%
+classDiagram-v2
+    direction TB
+    class Customer {
+        +id: number
+        +name: string
+        +email: string
+        +password: string
+        +isAdmin: boolean
+    }
+    class ICustomerRepository {
+        <<interface>>
+        +create(customer: Customer): Customer
+        +findById(id: number): Customer?
+        +findByEmail(email: string): Customer?
+        +findAll(): Customer[]
+        +update(id: number, data: Customer): Customer
+        +delete(id: number): void
+    }
+    class PrismaCustomerRepository {
+        -prisma: PrismaClient
+        +create(customer: Customer): Customer
+        +findById(id: number): Customer?
+        +findByEmail(email: string): Customer?
+        +findAll(): Customer[]
+        +update(id: number, data: Customer): Customer
+        +delete(id: number): void
+    }
+
+    Customer --> ICustomerRepository : usa contrato
+    ICustomerRepository <|.. PrismaCustomerRepository : implementa
+    note for Customer "Entidade de domínio"
+    note for PrismaCustomerRepository "Adapter (Prisma)"

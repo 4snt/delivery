@@ -44,13 +44,60 @@ Toda a documentação está organizada na pasta `/docs`:
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS
+```markdown
+# Delivery App - Sistema de Pedidos
+
+Sistema de delivery desenvolvido com **Next.js 15**, **Prisma ORM**, **PostgreSQL** e **TypeScript**, seguindo princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**.
+
+## Quick Start
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/seu-usuario/delivery.git
+cd delivery
+
+# 2. Instale as dependências
+pnpm install
+
+# 3. Inicie o PostgreSQL com Docker
+docker-compose up -d
+
+# 4. Configure as variáveis de ambiente
+cp .env.local.example .env.local
+
+# 5. Configure o banco de dados
+pnpm prisma generate
+pnpm prisma migrate deploy
+pnpm prisma db seed
+
+# 6. Crie um usuário admin
+pnpm tsx scripts/create-admin.ts
+
+# 7. Inicie o servidor
+pnpm dev
+```
+
+Acesse: **http://localhost:3000**
+
+## Documentação Completa
+
+Toda a documentação está organizada na pasta `/docs`:
+
+- **[Setup Local Completo](./docs/LOCAL_DEVELOPMENT.md)** - Guia detalhado de desenvolvimento local
+- **[Deploy no Vercel](./docs/DEPLOYMENT.md)** - Deploy em produção com Neon PostgreSQL
+- **[Arquitetura](./docs/ARCHITECTURE.md)** - Clean Architecture, DDD e padrões de design
+- **[Índice Completo](./docs/INDEX.md)** - Todos os documentos disponíveis
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes, Clean Architecture
 - **Database**: PostgreSQL (prod), Docker para local
 - **ORM**: Prisma
 - **Auth**: NextAuth.js (Google OAuth + Credentials)
 - **Deployment**: Vercel + Neon PostgreSQL
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 delivery/
@@ -64,12 +111,12 @@ delivery/
 │   ├── schema.prisma       # Database schema
 │   ├── seed.ts             # Seed script
 │   └── migrations/         # Database migrations
-├── docs/                   # 📚 Documentação completa
+├── docs/                   # Documentação completa
 ├── docker-compose.yml      # PostgreSQL local
 └── README.md              # Este arquivo
 ```
 
-## 🐳 Docker (PostgreSQL Local)
+## Docker (PostgreSQL Local)
 
 ```bash
 # Iniciar PostgreSQL
@@ -91,7 +138,7 @@ docker exec -it delivery-postgres psql -U delivery -d delivery_db
 - **User**: delivery
 - **Password**: delivery123
 
-## 🔧 Comandos Úteis
+## Comandos Úteis
 
 ```bash
 # Desenvolvimento
@@ -113,7 +160,7 @@ docker-compose down         # Para PostgreSQL
 docker-compose ps           # Status dos containers
 ```
 
-## 🗄️ Database Schema
+## Database Schema
 
 ```
 Cliente (Customer)
@@ -146,7 +193,7 @@ Adicional (Additional)
 └── nome: String
 ```
 
-## 🔐 Autenticação
+## Autenticação
 
 O sistema suporta dois métodos de autenticação:
 
@@ -159,18 +206,18 @@ O sistema suporta dois métodos de autenticação:
    - Token-based authentication
    - Usado em APIs legacy
 
-## 🚀 Deploy
+## Deploy
 
 ### Vercel (Recomendado)
 
 1. Conecte seu repositório no Vercel
 2. Configure a integração com Neon PostgreSQL
 3. As variáveis de ambiente serão configuradas automaticamente
-4. Deploy! 🎉
+4. Deploy!
 
-**[📖 Guia completo de deploy →](./docs/DEPLOYMENT.md)**
+**[Guia completo de deploy →](./docs/DEPLOYMENT.md)**
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 O projeto segue **Clean Architecture** com camadas bem definidas:
 
@@ -192,9 +239,9 @@ O projeto segue **Clean Architecture** com camadas bem definidas:
 └─────────────────────────────────┘
 ```
 
-**[📖 Arquitetura detalhada →](./docs/ARCHITECTURE.md)**
+**[Arquitetura detalhada →](./docs/ARCHITECTURE.md)**
 
-## 📝 Variáveis de Ambiente
+## Variáveis de Ambiente
 
 ### Local Development
 
@@ -219,9 +266,9 @@ ADMIN_SECRET="<your-admin-secret>"
 
 As variáveis são configuradas automaticamente pela integração Neon → Vercel.
 
-**[📖 Guia de configuração →](./docs/DEPLOYMENT.md#variáveis-de-ambiente)**
+**[Guia de configuração →](./docs/DEPLOYMENT.md#variáveis-de-ambiente)**
 
-## 🧪 Testes
+## Testes
 
 ```bash
 # Executar testes
@@ -234,7 +281,7 @@ pnpm test:coverage
 pnpm test:watch
 ```
 
-## 🤝 Contribuindo
+## Contribuindo
 
 1. Fork o projeto
 2. Crie uma branch (`git checkout -b feature/nova-feature`)
@@ -253,16 +300,18 @@ Seguimos [Conventional Commits](https://www.conventionalcommits.org/):
 - `test:` Testes
 - `chore:` Manutenção
 
-## 📄 Licença
+## Licença
 
 Este projeto está sob a licença MIT.
 
-## 🆘 Precisa de Ajuda?
+## Precisa de Ajuda?
 
-- **[💬 Troubleshooting](./docs/LOCAL_DEVELOPMENT.md#troubleshooting)**
-- **[📧 Issues](https://github.com/seu-usuario/delivery/issues)**
-- **[📚 Documentação Completa](./docs/INDEX.md)**
+- **[Troubleshooting](./docs/LOCAL_DEVELOPMENT.md#troubleshooting)**
+- **[Issues](https://github.com/seu-usuario/delivery/issues)**
+- **[Documentação Completa](./docs/INDEX.md)**
 
 ---
 
-**Desenvolvido com 💜 usando Next.js, Prisma e Clean Architecture**
+**Desenvolvido usando Next.js, Prisma e Clean Architecture**
+
+````

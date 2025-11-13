@@ -1,0 +1,22 @@
+%%{init: {'theme': 'neutral', 'themeVariables': { 'primaryColor': '#fdf2ff', 'primaryBorderColor': '#9333ea', 'primaryTextColor': '#2d0a4e', 'secondaryColor': '#ede9fe', 'lineColor': '#7c3aed', 'fontFamily': 'Inter', 'background': 'transparent' }}}%%
+classDiagram-v2
+    direction TB
+    class PrismaClientFactory {
+        -instance: PrismaClient
+        +getInstance(): PrismaClient
+    }
+    class CustomerFactory {
+        +makeCreateCustomerUseCase(): CreateCustomerUseCase
+    }
+    class OrderFactory {
+        +makeCreateOrderUseCase(): CreateOrderUseCase
+    }
+    class AuthFactory {
+        +makeAuthenticateCustomerUseCase(): AuthenticateCustomerUseCase
+    }
+
+    PrismaClientFactory <.. CustomerFactory : reutiliza instância
+    PrismaClientFactory <.. OrderFactory
+    PrismaClientFactory <.. AuthFactory
+
+    note for PrismaClientFactory "Singleton compartilhado"
