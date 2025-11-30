@@ -1,12 +1,23 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
+import { useEffect } from "react";
 
 // Produto representa um sorvete (pote) com seus itens
+export interface SaborSelecionado {
+  id: number;
+  nome: string;
+}
+
+export interface AdicionalSelecionado {
+  id: number;
+  nome: string;
+}
+
 export interface Produto {
   tamanho: string;
   preco: number;
-  sabores: string[];
-  adicionais?: string[];
+  sabores: SaborSelecionado[];
+  adicionais?: AdicionalSelecionado[];
 }
 
 export interface Pedido {
@@ -33,6 +44,7 @@ interface PedidoContextType {
 }
 
 const PedidoContext = createContext<PedidoContextType | undefined>(undefined);
+const STORAGE_KEY = "pedido-atual";
 
 export const usePedido = () => {
   const context = useContext(PedidoContext);
@@ -41,7 +53,37 @@ export const usePedido = () => {
 };
 
 export const PedidoProvider = ({ children }: { children: React.ReactNode }) => {
-  const [pedido, setPedido] = useState<Pedido>({ potes: [], status: "Em preparo", cliente: { nome: "", email: "", endereco: "" }, data: new Date().toISOString() });
+  const [pedido, setPedido] = useState<Pedido>({
+    potes: [],
+    status: "Em preparo",
+    cliente: { nome: "", email: "", endereco: "" },
+    data: "",
+  });
+
+  // Carrega do localStorage na montagem
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.potes) {
+          setPedido(parsed);
+        }
+      }
+    } catch (err) {
+      console.warn("Não foi possível carregar o carrinho salvo", err);
+    }
+    if (!pedido.data) {
+      setPedido((prev) => ({ ...prev, data: new Date().toISOString() }));
+    }
+  }, []);
+
+  // Persiste mudanças
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(pedido));
+  }, [pedido]);
 
   const adicionarPote = (pote: Produto) => setPedido(prev => ({ ...prev, potes: [...prev.potes, pote] }));
   const removerPote = (index: number) => setPedido(prev => ({ ...prev, potes: prev.potes.filter((_, i) => i !== index) }));

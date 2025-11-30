@@ -1,6 +1,7 @@
 
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { serializeBigInt } from '@/lib/serializeBigInt';
 import bcrypt from 'bcryptjs';
 
 export async function GET(request: Request) {
@@ -154,7 +155,7 @@ export async function PUT(request: Request) {
 
         // Remove a senha da resposta
         const { senha: _, ...clienteSemSenha } = updatedCliente;
-        return NextResponse.json(clienteSemSenha);
+        return NextResponse.json(serializeBigInt(clienteSemSenha));
     } catch (error) {
         console.error('Erro ao atualizar cliente:', error);
         return NextResponse.json({ error: 'Erro ao atualizar cliente' }, { status: 500 });

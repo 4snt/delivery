@@ -12,7 +12,7 @@ export default function AdicionaisPage() {
   const { pedido, setPedido } = usePedido();
   const router = useRouter();
   const [adicionais, setAdicionais] = useState<Adicional[]>([]);
-  const [selecionados, setSelecionados] = useState<string[]>([]);
+  const [selecionados, setSelecionados] = useState<Adicional[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,10 +41,14 @@ export default function AdicionaisPage() {
       });
   }, []);
 
-  const handleToggle = (adicional: string) => {
-    setSelecionados((prev) =>
-      prev.includes(adicional) ? prev.filter((a) => a !== adicional) : [...prev, adicional]
-    );
+  const handleToggle = (adicional: Adicional) => {
+    setSelecionados((prev) => {
+      const exists = prev.find((a) => a.id === adicional.id);
+      if (exists) {
+        return prev.filter((a) => a.id !== adicional.id);
+      }
+      return [...prev, adicional];
+    });
   };
 
   const handleAvancar = () => {
@@ -121,10 +125,10 @@ export default function AdicionaisPage() {
               {adicionais.map((adicional) => (
                 <button
                   key={adicional.id}
-                  onClick={() => handleToggle(adicional.nome)}
+                  onClick={() => handleToggle(adicional)}
                   className={`
                     p-4 rounded-xl border-2 transition-all duration-300 transform hover:scale-105
-                    ${selecionados.includes(adicional.nome)
+                    ${selecionados.some((a) => a.id === adicional.id)
                       ? 'border-purple-600 bg-purple-50 shadow-lg'
                       : 'border-gray-200 bg-white hover:border-purple-300 hover:shadow-md'
                     }
@@ -133,12 +137,12 @@ export default function AdicionaisPage() {
                   <div className="flex items-center gap-3">
                     <div className={`
                       w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0
-                      ${selecionados.includes(adicional.nome)
+                      ${selecionados.some((a) => a.id === adicional.id)
                         ? 'bg-purple-600 border-purple-600'
                         : 'border-gray-300'
                       }
                     `}>
-                      {selecionados.includes(adicional.nome) && (
+                      {selecionados.some((a) => a.id === adicional.id) && (
                         <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>

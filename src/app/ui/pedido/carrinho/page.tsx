@@ -83,7 +83,7 @@ export default function CarrinhoPage() {
                               key={i}
                               className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium"
                             >
-                              {sabor}
+                              {sabor.nome}
                             </span>
                           ))}
                         </div>
@@ -100,7 +100,7 @@ export default function CarrinhoPage() {
                                 key={i}
                                 className="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm font-medium"
                               >
-                                {adicional}
+                                {adicional.nome}
                               </span>
                             ))}
                           </div>
@@ -147,5 +147,4 @@ export default function CarrinhoPage() {
     </div>
   );
 }
-
 

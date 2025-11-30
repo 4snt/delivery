@@ -1,10 +1,11 @@
 
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { serializeBigInt } from '@/lib/serializeBigInt';
 
 export async function GET() {
   const adicionais = await prisma.adicional.findMany();
-  return NextResponse.json(adicionais);
+  return NextResponse.json(serializeBigInt(adicionais));
 }
 
 export async function POST(request: Request) {
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
         nome,
       },
     });
-    return NextResponse.json(novoAdicional, { status: 201 });
+    return NextResponse.json(serializeBigInt(novoAdicional), { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Erro ao adicionar adicional' }, { status: 500 });
   }

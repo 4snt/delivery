@@ -2,15 +2,76 @@
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { usePedido } from "./ui/pedido/PedidoContext";
+import dynamic from "next/dynamic";
+
+const CartDropdown = dynamic(() => import("@/app/components/CartDropdown"), { ssr: false });
 
 export default function HeaderClient() {
   const { data: session } = useSession();
   const router = useRouter();
+  const { pedido } = usePedido();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const itensCarrinho = useMemo(() => pedido.potes.length, [pedido.potes.length]);
+
+  const CartBadge = () => (
+    <span className="relative inline-flex items-center gap-2">
+      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
+        <svg
+          className="w-5 h-5 text-white"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 6H4.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M8 6H21L19 14H9L8 6Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M10 18.5C10 19.3284 9.32843 20 8.5 20C7.67157 20 7 19.3284 7 18.5C7 17.6716 7.67157 17 8.5 17C9.32843 17 10 17.6716 10 18.5Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M18 18.5C18 19.3284 17.3284 20 16.5 20C15.6716 20 15 19.3284 15 18.5C15 17.6716 15.6716 17 16.5 17C17.3284 17 18 17.6716 18 18.5Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M9 14L8 6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M19 14L21 6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      </span>
+      {itensCarrinho > 0 && (
+        <span className="absolute -right-2 -top-1 inline-flex h-5 min-w-5 px-2 items-center justify-center rounded-full bg-white text-purple-700 text-xs font-bold">
+          {itensCarrinho}
+        </span>
+      )}
+    </span>
+  );
 
   return (
-    <header className="bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg sticky top-0 z-[60]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -29,15 +90,39 @@ export default function HeaderClient() {
             <Link href="/ui/pedido/tamanho" className="hover:text-purple-200 transition-colors font-medium">
               Fazer Pedido
             </Link>
-            {session && (
-              <Link href="/protegido/dashboard" className="hover:text-purple-200 transition-colors font-medium">
-                Dashboard
+            <Link href="/pedidos/acompanhar" className="hover:text-purple-200 transition-colors font-medium">
+              Acompanhar
+            </Link>
+            <div
+              className="relative flex items-center gap-2"
+              onMouseEnter={() => setCartOpen(true)}
+              onMouseLeave={() => setCartOpen(false)}
+            >
+              <Link href="/ui/pedido/carrinho" className="hover:text-purple-200 transition-colors font-medium flex items-center gap-2">
+                <CartBadge />
+                <span>Carrinho</span>
               </Link>
-            )}
+              {cartOpen && (
+                <div className="absolute right-0 top-full pt-3">
+                  <CartDropdown onClose={() => setCartOpen(false)} />
+                </div>
+              )}
+            </div>
             {(session?.user as any)?.isAdmin && (
-              <Link href="/dashboard" className="hover:text-purple-200 transition-colors font-medium bg-white/20 px-3 py-1 rounded-lg">
-                🛠️ Admin
-              </Link>
+              <>
+                <Link
+                  href="/dashboard"
+                  className="hover:text-purple-200 transition-colors font-medium bg-white/20 px-3 py-1 rounded-lg"
+                >
+                  🛠️ Admin
+                </Link>
+                <Link
+                  href="/dashboard/pedidos"
+                  className="hover:text-purple-200 transition-colors font-medium"
+                >
+                  Pedidos
+                </Link>
+              </>
             )}
           </nav>
 
@@ -73,34 +158,51 @@ export default function HeaderClient() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {mobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+          {/* Mobile CTAs */}
+          <div className="md:hidden flex items-center gap-3">
+            <div className="relative">
+              <button
+                onClick={() => setCartOpen((prev) => !prev)}
+                aria-label="Carrinho"
+                className="p-1"
+              >
+                <CartBadge />
+              </button>
+              {cartOpen && (
+                <div className="absolute right-0 top-full pt-2">
+                  <CartDropdown onClose={() => setCartOpen(false)} />
+                </div>
               )}
-            </svg>
-          </button>
+            </div>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2"
+              aria-label="Menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -121,15 +223,28 @@ export default function HeaderClient() {
               >
                 Fazer Pedido
               </Link>
-              {session && (
-                <Link
-                  href="/protegido/dashboard"
-                  className="hover:text-purple-200 transition-colors font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-              )}
+              <Link
+                href="/pedidos/acompanhar"
+                className="hover:text-purple-200 transition-colors font-medium py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Acompanhar
+              </Link>
+              <Link
+                href="/ui/pedido/carrinho"
+                className="hover:text-purple-200 transition-colors font-medium py-2 flex items-center gap-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
+                  🛒
+                </span>
+                Carrinho
+                {itensCarrinho > 0 && (
+                  <span className="inline-flex h-5 min-w-5 px-2 items-center justify-center rounded-full bg-white text-purple-700 text-xs font-bold">
+                    {itensCarrinho}
+                  </span>
+                )}
+              </Link>
               {(session?.user as any)?.isAdmin && (
                 <Link
                   href="/dashboard"
@@ -137,6 +252,15 @@ export default function HeaderClient() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   🛠️ Admin
+                </Link>
+              )}
+              {(session?.user as any)?.isAdmin && (
+                <Link
+                  href="/dashboard/pedidos"
+                  className="hover:text-purple-200 transition-colors font-medium py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Pedidos
                 </Link>
               )}
               <div className="border-t border-purple-500 pt-3 mt-2">
@@ -185,5 +309,3 @@ export default function HeaderClient() {
     </header>
   );
 }
-
-

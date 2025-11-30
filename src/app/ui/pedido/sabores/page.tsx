@@ -14,7 +14,9 @@ export default function SaboresPage() {
   const router = useRouter();
   const [sabores, setSabores] = useState<Sabor[]>([]);
   // Selecionados: sabores do último pote (em montagem)
-  const [selecionados, setSelecionados] = useState<string[]>(pedido.potes.length > 0 ? pedido.potes[pedido.potes.length - 1].sabores : []);
+  const [selecionados, setSelecionados] = useState<Sabor[]>(
+    pedido.potes.length > 0 ? pedido.potes[pedido.potes.length - 1].sabores : []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,10 +36,14 @@ export default function SaboresPage() {
       });
   }, []);
 
-  const handleToggle = (sabor: string) => {
-    setSelecionados((prev) =>
-      prev.includes(sabor) ? prev.filter((s) => s !== sabor) : [...prev, sabor]
-    );
+  const handleToggle = (sabor: Sabor) => {
+    setSelecionados((prev) => {
+      const exists = prev.find((s) => s.id === sabor.id);
+      if (exists) {
+        return prev.filter((s) => s.id !== sabor.id);
+      }
+      return [...prev, sabor];
+    });
   };
 
   const handleAvancar = () => {
@@ -93,20 +99,20 @@ export default function SaboresPage() {
               <div
                 key={sabor.id}
                 className={`relative bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                  selecionados.includes(sabor.nome) 
+                  selecionados.some((s) => s.id === sabor.id) 
                     ? 'ring-4 ring-purple-500 shadow-2xl' 
                     : 'hover:shadow-xl'
                 }`}
-                onClick={() => handleToggle(sabor.nome)}
+                onClick={() => handleToggle(sabor)}
               >
                 {/* Checkbox overlay */}
                 <div className="absolute top-2 right-2 z-10">
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                    selecionados.includes(sabor.nome)
+                    selecionados.some((s) => s.id === sabor.id)
                       ? 'bg-purple-500 border-purple-500'
                       : 'bg-white border-gray-300'
                   }`}>
-                    {selecionados.includes(sabor.nome) && (
+                    {selecionados.some((s) => s.id === sabor.id) && (
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>

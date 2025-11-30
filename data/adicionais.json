@@ -24,19 +24,19 @@
     "nome": "Castanha"
   },
   {
-    "nome": "Leite em Pó",
-    "id": 1758722765549
+    "id": 7,
+    "nome": "Leite em Pó"
   },
   {
-    "nome": "Granola",
-    "id": 1758722778956
+    "id": 8,
+    "nome": "Granola"
   },
   {
-    "nome": "Banana",
-    "id": 1758722781233
+    "id": 9,
+    "nome": "Banana"
   },
   {
-    "nome": "Morango",
-    "id": 1758722784143
+    "id": 10,
+    "nome": "Morango"
   }
 ]

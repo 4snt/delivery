@@ -2,15 +2,18 @@
 import { usePedido } from "../PedidoContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const { pedido, setPedido } = usePedido();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [nome, setNome] = useState(pedido.cliente?.nome || "");
   const [email, setEmail] = useState(pedido.cliente?.email || "");
+  const [senha, setSenha] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
   const total = pedido.potes.reduce((acc, pote) => acc + pote.preco, 0);
+  const isAuthenticated = status === "authenticated";
 
   useEffect(() => {
     if (session?.user) {
@@ -25,6 +28,10 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nome || !email) return;
+    if (!isAuthenticated) {
+      setAuthError("Faça login (Google ou email/senha) para continuar.");
+      return;
+    }
     setPedido(prev => ({
       ...prev,
       cliente: {
@@ -34,6 +41,23 @@ export default function LoginPage() {
       },
     }));
     router.push("/ui/pedido/pagamento");
+  };
+
+  const handleCredentialsLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
+    if (!email || !senha) {
+      setAuthError("Preencha email e senha para entrar.");
+      return;
+    }
+    const result = await signIn("credentials", {
+      email,
+      senha,
+      redirect: false,
+    });
+    if (result?.error) {
+      setAuthError("Login com email/senha falhou. Verifique as credenciais.");
+    }
   };
 
   if (pedido.potes.length === 0) {
@@ -64,8 +88,8 @@ export default function LoginPage() {
             {pedido.potes.map((pote, idx) => (
               <li key={idx} className="mb-2">
                 <b>Pote {idx + 1}:</b> {pote.tamanho} - R$ {pote.preco.toFixed(2)}<br />
-                <b>Sabores:</b> {pote.sabores.join(", ")}<br />
-                <b>Adicionais:</b> {pote.adicionais?.length ? pote.adicionais.join(", ") : "Nenhum"}
+                <b>Sabores:</b> {pote.sabores.map((s) => s.nome).join(", ")}<br />
+                <b>Adicionais:</b> {pote.adicionais?.length ? pote.adicionais.map((a) => a.nome).join(", ") : "Nenhum"}
               </li>
             ))}
           </ul>
@@ -94,8 +118,8 @@ export default function LoginPage() {
           <button
             type="submit"
             className="w-full py-3 rounded-lg text-lg font-semibold shadow transition"
-            style={{ background: nome && email ? "#8b5cf6" : "#e9d5ff", color: nome && email ? "#fff" : "#888" }}
-            disabled={!nome || !email}
+            style={{ background: nome && email && isAuthenticated ? "#8b5cf6" : "#e9d5ff", color: nome && email && isAuthenticated ? "#fff" : "#888" }}
+            disabled={!nome || !email || !isAuthenticated}
           >
             Continuar
           </button>
@@ -108,13 +132,42 @@ export default function LoginPage() {
           >
             Entrar com Google
           </button>
-          <div className="mt-3 text-center text-sm text-gray-500">
-            <a href="/api/auth/signin/google" className="underline">Tentar login via link direto</a>
+          <div className="mt-4">
+            <form onSubmit={handleCredentialsLogin} className="flex flex-col gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email cadastrado"
+                className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
+              />
+              <input
+                type="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                placeholder="Senha"
+                className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full py-3 rounded-lg text-lg font-semibold shadow transition bg-gray-900 text-white"
+              >
+                Entrar com email e senha
+              </button>
+            </form>
           </div>
+          {authError && (
+            <p className="mt-3 text-center text-sm text-red-600">{authError}</p>
+          )}
+          {status === "authenticated" && (
+            <p className="mt-3 text-center text-sm text-green-700">
+              Login confirmado para {session.user?.email}
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-
