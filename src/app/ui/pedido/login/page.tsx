@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [loadingAuth, setLoadingAuth] = useState(false);
   const total = pedido.potes.reduce((acc, pote) => acc + pote.preco, 0);
   const isAuthenticated = status === "authenticated";
+  const canContinue = isAuthenticated && !!nome && !!email;
 
   useEffect(() => {
     if (session?.user) {
@@ -114,6 +115,9 @@ export default function LoginPage() {
         {/* Login */}
         <div className="p-8 space-y-5">
           <h2 className="text-2xl font-bold text-purple-800">Identifique-se</h2>
+          <p className="text-sm text-gray-600">
+            Passos: (1) Faça login com Google ou email/senha. (2) Confirme seu nome e email. (3) Continue.
+          </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -142,9 +146,9 @@ export default function LoginPage() {
             <button
               type="submit"
               className="w-full py-3 rounded-xl text-lg font-semibold shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed bg-gradient-to-r from-purple-600 to-pink-600 text-white disabled:from-gray-300 disabled:to-gray-400"
-              disabled={!nome || !email || !isAuthenticated}
+              disabled={!canContinue}
             >
-              Continuar
+              {canContinue ? "Continuar" : "Faça login para continuar"}
             </button>
           </form>
 
