@@ -116,8 +116,55 @@ export default function LoginPage() {
         <div className="p-8 space-y-5">
           <h2 className="text-2xl font-bold text-purple-800">Identifique-se</h2>
           <p className="text-sm text-gray-600">
-            Passos: (1) Faça login com Google ou email/senha. (2) Confirme seu nome e email. (3) Continue.
+            Passos: (1) Faça login (email/senha ou Google). (2) Confirme nome e email. (3) Continue.
           </p>
+          <div className="space-y-3 bg-gray-50 border border-gray-200 rounded-2xl p-4">
+            <p className="text-sm font-semibold text-gray-700">Entrar</p>
+            <form onSubmit={handleCredentialsLogin} className="space-y-3">
+              <div>
+                <label className="text-sm font-semibold text-gray-700">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-base bg-white"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-gray-700">Senha</label>
+                <input
+                  type="password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-base bg-white"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl text-lg font-semibold shadow transition bg-gray-900 text-white disabled:opacity-70"
+                disabled={loadingAuth}
+              >
+                {loadingAuth ? "Entrando..." : "Entrar com email e senha"}
+              </button>
+            </form>
+            <div className="relative pt-3">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-200" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-gray-50 px-2 text-gray-500">ou</span>
+              </div>
+            </div>
+            <button
+              onClick={() => signIn("google", { callbackUrl: "/ui/pedido/pagamento", redirect: true })}
+              className="w-full py-3 rounded-xl text-lg font-semibold shadow transition bg-red-500 text-white hover:bg-red-600"
+            >
+              Entrar com Google
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -151,53 +198,14 @@ export default function LoginPage() {
               {canContinue ? "Continuar" : "Faça login para continuar"}
             </button>
           </form>
-
-          <div className="space-y-3">
-            <p className="text-sm text-gray-500">Entre para liberar a continuação:</p>
-            <button
-              onClick={() => signIn("google", { callbackUrl: "/ui/pedido/pagamento", redirect: true })}
-              className="w-full py-3 rounded-xl text-lg font-semibold shadow transition bg-red-500 text-white hover:bg-red-600"
-            >
-              Entrar com Google
-            </button>
-            <form onSubmit={handleCredentialsLogin} className="space-y-3 bg-gray-50 border border-gray-200 rounded-2xl p-4">
-              <div>
-                <label className="text-sm font-semibold text-gray-700">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-base bg-white"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-gray-700">Senha</label>
-                <input
-                  type="password"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                  className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-base bg-white"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full py-3 rounded-xl text-lg font-semibold shadow transition bg-gray-900 text-white disabled:opacity-70"
-                disabled={loadingAuth}
-              >
-                {loadingAuth ? "Entrando..." : "Entrar com email e senha"}
-              </button>
-            </form>
-            {authError && (
-              <p className="text-sm text-red-600">{authError}</p>
-            )}
-            {status === "authenticated" && (
-              <p className="text-sm text-green-700">
-                Login confirmado para {session.user?.email}
-              </p>
-            )}
-          </div>
+          {authError && (
+            <p className="text-sm text-red-600">{authError}</p>
+          )}
+          {status === "authenticated" && (
+            <p className="text-sm text-green-700">
+              Login confirmado para {session.user?.email}
+            </p>
+          )}
         </div>
       </div>
     </div>
