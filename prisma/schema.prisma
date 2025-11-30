@@ -5,8 +5,8 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL") // Pooled connection for queries
-  // Usa NON_POOLING (Vercel/Neon). Defina também POSTGRES_URL_NON_POOLED com mesmo valor, ou preencha uma das duas.
-  directUrl = env("POSTGRES_URL_NON_POOLING") // if missing, set POSTGRES_URL_NON_POOLING/POSTGRES_URL_NON_POOLED
+  // Usando a mesma URL para migrations (defina POSTGRES_URL_NON_POOLING se preferir, mas não é obrigatório).
+  directUrl = env("POSTGRES_PRISMA_URL")
 }
 
 model Adicional {
