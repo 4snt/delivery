@@ -149,7 +149,7 @@ export default function AdicionaisPage() {
                       )}
                     </div>
                     <span className={`font-semibold text-lg ${
-                      selecionados.includes(adicional.nome) ? 'text-purple-700' : 'text-gray-700'
+                      selecionados.some((a) => a.id === adicional.id) ? 'text-purple-700' : 'text-gray-700'
                     }`}>
                       {adicional.nome}
                     </span>

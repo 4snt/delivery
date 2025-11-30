@@ -39,7 +39,8 @@ export default function EnderecoPage() {
     e.preventDefault();
     const camposObrigatorios = [rua, numero, bairro, cidade, estado, cep];
     if (camposObrigatorios.some((c) => !c)) return;
-    if (!session?.user || !session.user.id) {
+    const userId = (session?.user as any)?.id;
+    if (!userId) {
       alert("Faça login com uma conta válida antes de finalizar.");
       router.push("/ui/pedido/login");
       return;
@@ -66,7 +67,7 @@ export default function EnderecoPage() {
       );
 
       const payload = {
-        clienteId: Number(session.user.id),
+        clienteId: Number(userId),
         sabores,
         adicionais,
         tamanho: pedidoFinal.potes.map((p) => p.tamanho).join(" | "),
