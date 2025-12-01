@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
+import { randomBytes } from "crypto";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -48,11 +49,43 @@ export const authOptions: AuthOptions = {
     strategy: "jwt" as const,
   },
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, account }: any) {
       if (user) {
+        token.name = user.name || token.name;
+        token.email = user.email || token.email;
+      }
+
+      // Mantém dados de credenciais já autenticados
+      if (user?.id && !token.id) {
         token.id = user.id;
         token.isAdmin = user.isAdmin;
+        return token;
       }
+
+      // Vincula/gera cliente ao usar Google
+      const shouldEnsureCliente = (!token.id && token.email) || account?.provider === "google";
+      if (shouldEnsureCliente && token.email) {
+        const existing = await prisma.cliente.findUnique({ where: { email: token.email } });
+        if (existing) {
+          token.id = existing.id.toString();
+          token.isAdmin = existing.isAdmin;
+          token.name = token.name || existing.nome;
+          return token;
+        }
+
+        const randomPassword = randomBytes(16).toString("hex");
+        const hashedPassword = await bcrypt.hash(randomPassword, 10);
+        const created = await prisma.cliente.create({
+          data: {
+            email: token.email,
+            nome: token.name || token.email,
+            senha: hashedPassword,
+          } as any,
+        });
+        token.id = created.id.toString();
+        token.isAdmin = created.isAdmin;
+      }
+
       return token;
     },
     async session({ session, token }: any) {
