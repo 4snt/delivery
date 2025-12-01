@@ -44,7 +44,17 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { clienteId, sabores, adicionais, tamanho, valorTotal, formaPagamento, enderecoEntrega } = await request.json();
+    const {
+      clienteId,
+      sabores,
+      adicionais,
+      tamanho,
+      valorTotal,
+      formaPagamento,
+      enderecoEntrega,
+      cupomCodigo,
+      descontoAplicado = 0,
+    } = await request.json();
     const clienteIdBigInt = BigInt(clienteId);
     const saboresList = Array.isArray(sabores) ? sabores : [];
     const adicionaisList = Array.isArray(adicionais) ? adicionais : [];
@@ -64,6 +74,8 @@ export async function POST(request: Request) {
         },
         tamanho,
         valorTotal,
+        descontoAplicado,
+        cupomCodigo,
         formaPagamento,
         enderecoEntrega,
       },
@@ -81,6 +93,32 @@ export async function POST(request: Request) {
         },
       },
     });
+
+    if (cupomCodigo) {
+      await prisma.cupom.updateMany({
+        where: { codigo: cupomCodigo },
+        data: { usosAtuais: { increment: 1 } },
+      });
+    }
+
+    // Regra simples: 1 ponto a cada R$10 líquidos
+    const pontosGanhos = Math.floor((valorTotal || 0) / 10);
+    if (pontosGanhos > 0) {
+      await prisma.$transaction([
+        prisma.cliente.update({
+          where: { id: clienteIdBigInt },
+          data: { pontosFidelidade: { increment: pontosGanhos } },
+        }),
+        prisma.fidelidadeTransacao.create({
+          data: {
+            clienteId: clienteIdBigInt,
+            pontos: pontosGanhos,
+            tipo: 'earn',
+            descricao: 'Compra realizada',
+          },
+        }),
+      ]);
+    }
 
     return NextResponse.json(serializeBigInt(novoPedido), { status: 201 });
   } catch (error) {

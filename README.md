@@ -1,4 +1,4 @@
-# 🍦 Delivery App - Sistema de Pedidos
+# 🍦 Açai do Vale - Sistema de Pedidos
 
 Sistema de delivery desenvolvido com **Next.js 15**, **Prisma ORM**, **PostgreSQL** e **TypeScript**, seguindo princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**.
 

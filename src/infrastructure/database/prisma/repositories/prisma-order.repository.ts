@@ -14,6 +14,8 @@ export class PrismaOrderRepository implements IOrderRepository {
         clienteId: BigInt(order.customerId),
         tamanho: order.size,
         valorTotal: order.totalValue,
+        descontoAplicado: order.discountValue,
+        cupomCodigo: order.couponCode || undefined,
         formaPagamento: order.paymentMethod,
         enderecoEntrega: order.deliveryAddress,
         status: order.status || "Pendente",
@@ -42,6 +44,8 @@ export class PrismaOrderRepository implements IOrderRepository {
       size: created.tamanho,
       totalValue: created.valorTotal,
       paymentMethod: created.formaPagamento,
+      discountValue: created.descontoAplicado,
+      couponCode: created.cupomCodigo,
       deliveryAddress: created.enderecoEntrega,
       status: created.status,
       createdAt: created.createdAt,
@@ -67,6 +71,8 @@ export class PrismaOrderRepository implements IOrderRepository {
       size: order.tamanho,
       totalValue: order.valorTotal,
       paymentMethod: order.formaPagamento,
+      discountValue: order.descontoAplicado,
+      couponCode: order.cupomCodigo,
       deliveryAddress: order.enderecoEntrega,
       status: order.status,
       createdAt: order.createdAt,
@@ -89,8 +95,10 @@ export class PrismaOrderRepository implements IOrderRepository {
         additionalIds: order.adicionais.map((a: any) => Number(a.adicionalId)),
         size: order.tamanho,
         totalValue: order.valorTotal,
-        paymentMethod: order.formaPagamento,
-        deliveryAddress: order.enderecoEntrega,
+      paymentMethod: order.formaPagamento,
+      discountValue: order.descontoAplicado,
+      couponCode: order.cupomCodigo,
+      deliveryAddress: order.enderecoEntrega,
         status: order.status,
         createdAt: order.createdAt,
       })
@@ -126,6 +134,8 @@ export class PrismaOrderRepository implements IOrderRepository {
     const updateData: any = {};
     if (data.size) updateData.tamanho = data.size;
     if (data.totalValue) updateData.valorTotal = data.totalValue;
+    if (data.discountValue !== undefined) updateData.descontoAplicado = data.discountValue;
+    if (data.couponCode !== undefined) updateData.cupomCodigo = data.couponCode;
     if (data.paymentMethod) updateData.formaPagamento = data.paymentMethod;
     if (data.deliveryAddress) updateData.enderecoEntrega = data.deliveryAddress;
     if (data.status) updateData.status = data.status;

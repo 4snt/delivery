@@ -17,10 +17,11 @@ export default function EnderecoPage() {
   const [cep, setCep] = useState("");
   const [referencia, setReferencia] = useState("");
   const [finalizado, setFinalizado] = useState(false);
-  const valorTotal = useMemo(
+  const valorSubtotal = useMemo(
     () => pedido.potes.reduce((acc, pote) => acc + pote.preco, 0),
     [pedido.potes],
   );
+  const valorTotal = useMemo(() => Math.max(0, valorSubtotal - (pedido.desconto || 0)), [valorSubtotal, pedido.desconto]);
 
   useEffect(() => {
     if (!pedido.cliente?.email && session?.user?.email) {
@@ -72,6 +73,8 @@ export default function EnderecoPage() {
         adicionais,
         tamanho: pedidoFinal.potes.map((p) => p.tamanho).join(" | "),
         valorTotal,
+        cupomCodigo: pedido.cupom?.codigo || null,
+        descontoAplicado: pedido.desconto || 0,
         formaPagamento: pedidoFinal.pagamento || "não informado",
         enderecoEntrega: enderecoCompleto,
       };
@@ -122,6 +125,9 @@ export default function EnderecoPage() {
               <h2 className="text-lg font-semibold text-gray-800 mb-1">Entrega</h2>
               <p><span className="font-semibold">Endereço:</span> {pedido.endereco}</p>
               <p><span className="font-semibold">Pagamento:</span> {pedido.pagamento}</p>
+              {pedido.cupom && (
+                <p><span className="font-semibold">Cupom:</span> {pedido.cupom.codigo} (-R$ {(pedido.desconto || 0).toFixed(2)})</p>
+              )}
             </div>
           </div>
         </div>

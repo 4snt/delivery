@@ -13,6 +13,8 @@ interface CreateOrderRequest {
   additionalIds: number[];
   size: string;
   totalValue: number;
+  discountValue?: number;
+  couponCode?: string;
   paymentMethod: string;
   deliveryAddress: string;
 }
@@ -29,6 +31,8 @@ export class CreateOrderUseCase {
       additionalIds,
       size,
       totalValue,
+      discountValue,
+      couponCode,
       paymentMethod,
       deliveryAddress,
     } = request;
@@ -55,6 +59,8 @@ export class CreateOrderUseCase {
       totalValue,
       paymentMethod,
       deliveryAddress,
+      discountValue,
+      couponCode,
     });
 
     const createdOrder = await this.orderRepository.create(order);

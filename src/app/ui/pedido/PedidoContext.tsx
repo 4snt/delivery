@@ -25,6 +25,13 @@ export interface Pedido {
   pagamento?: string;
   status: "Em preparo" | "Entregue" | "Cancelado" | "saiu para entrega";
   endereco?: string;
+  cupom?: {
+    codigo: string;
+    desconto: number;
+    tipo: "percentual" | "valor_fixo";
+    valor: number;
+  } | null;
+  desconto?: number;
   cliente: Cliente;
   data: string;
 }
@@ -41,6 +48,8 @@ interface PedidoContextType {
   adicionarPote: (pote: Produto) => void;
   removerPote: (index: number) => void;
   limparPotes: () => void;
+  aplicarCupom: (cupom: Pedido["cupom"]) => void;
+  removerCupom: () => void;
 }
 
 const PedidoContext = createContext<PedidoContextType | undefined>(undefined);
@@ -56,6 +65,8 @@ export const PedidoProvider = ({ children }: { children: React.ReactNode }) => {
   const [pedido, setPedido] = useState<Pedido>({
     potes: [],
     status: "Em preparo",
+    cupom: null,
+    desconto: 0,
     cliente: { nome: "", email: "", endereco: "" },
     data: "",
   });
@@ -88,9 +99,11 @@ export const PedidoProvider = ({ children }: { children: React.ReactNode }) => {
   const adicionarPote = (pote: Produto) => setPedido(prev => ({ ...prev, potes: [...prev.potes, pote] }));
   const removerPote = (index: number) => setPedido(prev => ({ ...prev, potes: prev.potes.filter((_, i) => i !== index) }));
   const limparPotes = () => setPedido(prev => ({ ...prev, potes: [] }));
+  const aplicarCupom = (cupom: Pedido["cupom"]) => setPedido(prev => ({ ...prev, cupom, desconto: cupom?.desconto || 0 }));
+  const removerCupom = () => setPedido(prev => ({ ...prev, cupom: null, desconto: 0 }));
 
   return (
-    <PedidoContext.Provider value={{ pedido, setPedido, adicionarPote, removerPote, limparPotes }}>
+    <PedidoContext.Provider value={{ pedido, setPedido, adicionarPote, removerPote, limparPotes, aplicarCupom, removerCupom }}>
       {children}
     </PedidoContext.Provider>
   );

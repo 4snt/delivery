@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { usePedido } from "./ui/pedido/PedidoContext";
 import dynamic from "next/dynamic";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIceCream, faShoppingCart, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 const CartDropdown = dynamic(() => import("@/app/components/CartDropdown"), { ssr: false });
 
@@ -71,15 +74,20 @@ export default function HeaderClient() {
   );
 
   return (
-    <header className="bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg sticky top-0 z-[60]">
+    <header className="bg-gradient-to-r from-purple-500/90 via-pink-400/80 to-orange-300/80 backdrop-blur text-white shadow-lg sticky top-0 z-[60]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <span className="text-2xl"></span>
-            </div>
-            <span className="font-bold text-xl hidden sm:block">Sorveteria</span>
+            <Image 
+              src="/logo.png" 
+              alt="Açai do Vale" 
+              width={42} 
+              height={42}
+              className="object-contain drop-shadow-lg"
+              priority
+            />
+            <span className="font-bold text-xl hidden sm:block drop-shadow-sm">Açai do Vale</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -112,9 +120,10 @@ export default function HeaderClient() {
               <>
                 <Link
                   href="/dashboard"
-                  className="hover:text-purple-200 transition-colors font-medium bg-white/20 px-3 py-1 rounded-lg"
+                  className="hover:text-purple-200 transition-colors font-medium bg-white/20 px-3 py-1 rounded-lg flex items-center gap-2"
                 >
-                  🛠️ Admin
+                  <FontAwesomeIcon icon={faUserShield} className="text-sm" />
+                  Admin
                 </Link>
                 <Link
                   href="/dashboard/pedidos"
@@ -236,7 +245,7 @@ export default function HeaderClient() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
-                  🛒
+                  <FontAwesomeIcon icon={faShoppingCart} />
                 </span>
                 Carrinho
                 {itensCarrinho > 0 && (
@@ -248,10 +257,11 @@ export default function HeaderClient() {
               {(session?.user as any)?.isAdmin && (
                 <Link
                   href="/dashboard"
-                  className="hover:text-purple-200 transition-colors font-medium py-2 bg-white/20 px-3 rounded-lg"
+                  className="hover:text-purple-200 transition-colors font-medium py-2 bg-white/20 px-3 rounded-lg flex items-center gap-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  🛠️ Admin
+                  <FontAwesomeIcon icon={faUserShield} />
+                  Admin
                 </Link>
               )}
               {(session?.user as any)?.isAdmin && (

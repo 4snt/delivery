@@ -16,6 +16,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
         email: customer.email,
         senha: customer.password,
         isAdmin: customer.isAdmin || false,
+        pontosFidelidade: customer.loyaltyPoints ?? 0,
       } as any,
     });
 
@@ -25,6 +26,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       email: created.email,
       password: created.senha,
       isAdmin: (created as any).isAdmin,
+      loyaltyPoints: (created as any).pontosFidelidade ?? 0,
     });
   }
 
@@ -41,6 +43,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       email: customer.email,
       password: customer.senha,
       isAdmin: (customer as any).isAdmin,
+      loyaltyPoints: (customer as any).pontosFidelidade ?? 0,
     });
   }
 
@@ -57,6 +60,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       email: customer.email,
       password: customer.senha,
       isAdmin: (customer as any).isAdmin,
+      loyaltyPoints: (customer as any).pontosFidelidade ?? 0,
     });
   }
 
@@ -67,11 +71,12 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       Customer.create({
         id: Number(customer.id),
         name: customer.nome,
-        email: customer.email,
-        password: customer.senha,
-        isAdmin: customer.isAdmin,
-      })
-    );
+      email: customer.email,
+      password: customer.senha,
+      isAdmin: customer.isAdmin,
+      loyaltyPoints: customer.pontosFidelidade ?? 0,
+    })
+  );
   }
 
   async update(id: number, data: Partial<Customer>): Promise<Customer> {
@@ -80,6 +85,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
     if (data.email) updateData.email = data.email;
     if (data.password) updateData.senha = data.password;
     if (data.isAdmin !== undefined) updateData.isAdmin = data.isAdmin;
+    if (data.loyaltyPoints !== undefined) updateData.pontosFidelidade = data.loyaltyPoints;
 
     const updated = await this.prisma.cliente.update({
       where: { id: BigInt(id) },
@@ -92,6 +98,7 @@ export class PrismaCustomerRepository implements ICustomerRepository {
       email: updated.email,
       password: updated.senha,
       isAdmin: (updated as any).isAdmin,
+      loyaltyPoints: (updated as any).pontosFidelidade ?? 0,
     });
   }
 

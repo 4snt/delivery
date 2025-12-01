@@ -3,8 +3,8 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-async function createAdminUser() {
-  const email = 'admin@sorveteria.com';
+async function createAdmin() {
+  const email = 'admin@acaidovale.com';
   const password = 'admin123';
   const hashedPassword = await bcrypt.hash(password, 10);
 

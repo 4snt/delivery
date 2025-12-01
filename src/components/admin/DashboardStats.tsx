@@ -1,9 +1,12 @@
 "use client";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart, faUsers, faIceCream, faPlusCircle, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 interface StatsCardProps {
   title: string;
   value: number | string;
-  icon?: string;
+  icon?: IconDefinition;
   color?: "blue" | "green" | "yellow" | "purple";
 }
 
@@ -22,7 +25,7 @@ function StatsCard({ title, value, icon, color = "blue" }: StatsCardProps) {
           <p className="text-sm font-medium opacity-75">{title}</p>
           <p className="text-3xl font-bold mt-1">{value}</p>
         </div>
-        {icon && <span className="text-4xl opacity-50">{icon}</span>}
+        {icon && <FontAwesomeIcon icon={icon} className="text-4xl opacity-50" />}
       </div>
     </div>
   );
@@ -48,25 +51,25 @@ export function DashboardStats({
       <StatsCard
         title="Total de Pedidos"
         value={totalOrders}
-        icon=""
+        icon={faShoppingCart}
         color="blue"
       />
       <StatsCard
         title="Clientes"
         value={totalCustomers}
-        icon="👥"
+        icon={faUsers}
         color="green"
       />
       <StatsCard
         title="Sabores"
         value={totalFlavors}
-        icon=""
+        icon={faIceCream}
         color="yellow"
       />
       <StatsCard
         title="Adicionais"
         value={totalAdditionals}
-        icon="🍓"
+        icon={faPlusCircle}
         color="purple"
       />
       {totalRevenue > 0 && (
@@ -74,7 +77,7 @@ export function DashboardStats({
           <StatsCard
             title="Receita Total"
             value={`R$ ${totalRevenue.toFixed(2)}`}
-            icon="💰"
+            icon={faDollarSign}
             color="green"
           />
         </div>

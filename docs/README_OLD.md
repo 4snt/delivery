@@ -1,4 +1,4 @@
-# 🍦 Sorveteria Delivery
+# 🍦 Açai do Vale
 
 Sistema de delivery de sorvetes artesanais desenvolvido com **Next.js 15**, **Prisma ORM** e **SQLite**, seguindo os princípios de **DDD (Domain-Driven Design)**, **Arquitetura Hexagonal** e **Clean Architecture**.
 

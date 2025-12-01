@@ -1,6 +1,6 @@
 # 📚 Documentação do Projeto
 
-Bem-vindo à documentação completa do **Sorveteria Delivery**!
+Bem-vindo à documentação completa do **Açai do Vale**!
 
 ## 📖 Guias Disponíveis
 
@@ -23,7 +23,7 @@ Bem-vindo à documentação completa do **Sorveteria Delivery**!
   ```markdown
   # Documentação do Projeto
 
-  Bem-vindo à documentação completa do **Sorveteria Delivery**!
+  Bem-vindo à documentação completa do **Açai do Vale**!
 
   ## Guias Disponíveis
 

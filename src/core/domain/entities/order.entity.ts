@@ -10,6 +10,8 @@ export class Order {
     public readonly additionalIds: number[],
     public readonly size: string,
     public readonly totalValue: number,
+    public readonly discountValue: number,
+    public readonly couponCode: string | null,
     public readonly paymentMethod: string,
     public readonly deliveryAddress: string,
     public readonly status: string,
@@ -23,6 +25,8 @@ export class Order {
     additionalIds: number[];
     size: string;
     totalValue: number;
+    discountValue?: number;
+    couponCode?: string | null;
     paymentMethod: string;
     deliveryAddress: string;
     status?: string;
@@ -35,6 +39,8 @@ export class Order {
       props.additionalIds,
       props.size,
       props.totalValue,
+      props.discountValue || 0,
+      props.couponCode || null,
       props.paymentMethod,
       props.deliveryAddress,
       props.status || "Pendente",
@@ -50,6 +56,8 @@ export class Order {
       additionalIds: this.additionalIds,
       size: this.size,
       totalValue: this.totalValue,
+      discountValue: this.discountValue,
+      couponCode: this.couponCode,
       paymentMethod: this.paymentMethod,
       deliveryAddress: this.deliveryAddress,
       status: this.status,

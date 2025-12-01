@@ -9,6 +9,7 @@ export class Customer {
     public readonly email: string,
     public readonly password: string,
     public readonly isAdmin: boolean,
+    public readonly loyaltyPoints: number,
     public readonly createdAt: Date
   ) {}
 
@@ -18,6 +19,7 @@ export class Customer {
     email: string;
     password: string;
     isAdmin?: boolean;
+    loyaltyPoints?: number;
     createdAt?: Date;
   }): Customer {
     return new Customer(
@@ -26,6 +28,7 @@ export class Customer {
       props.email,
       props.password,
       props.isAdmin || false,
+      props.loyaltyPoints ?? 0,
       props.createdAt || new Date()
     );
   }
@@ -36,6 +39,7 @@ export class Customer {
       name: this.name,
       email: this.email,
       isAdmin: this.isAdmin,
+      loyaltyPoints: this.loyaltyPoints,
       createdAt: this.createdAt,
     };
   }

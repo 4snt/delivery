@@ -21,6 +21,8 @@ export class OrderController {
         additionalIds,
         size,
         totalValue,
+        discountValue,
+        couponCode,
         paymentMethod,
         deliveryAddress,
       } = body;
@@ -32,6 +34,8 @@ export class OrderController {
         additionalIds,
         size,
         totalValue,
+        discountValue,
+        couponCode,
         paymentMethod,
         deliveryAddress,
       });

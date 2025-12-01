@@ -1,12 +1,18 @@
 "use client";
 import { usePedido } from "../PedidoContext";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function CarrinhoPage() {
-  const { pedido, removerPote } = usePedido();
+  const { pedido, removerPote, aplicarCupom, removerCupom } = usePedido();
   const router = useRouter();
+  const [codigoCupom, setCodigoCupom] = useState(pedido.cupom?.codigo || "");
+  const [cupomMensagem, setCupomMensagem] = useState<string | null>(null);
+  const [aplicandoCupom, setAplicandoCupom] = useState(false);
 
-  const total = pedido.potes.reduce((acc, pote) => acc + pote.preco, 0);
+  const totalBruto = pedido.potes.reduce((acc, pote) => acc + pote.preco, 0);
+  const desconto = pedido.desconto || 0;
+  const total = Math.max(0, totalBruto - desconto);
 
   const handleRemover = (idx: number) => {
     removerPote(idx);
@@ -19,6 +25,37 @@ export default function CarrinhoPage() {
   const handleFinalizar = () => {
     if (pedido.potes.length === 0) return;
     router.push("/ui/pedido/login");
+  };
+
+  const handleAplicarCupom = async () => {
+    if (!codigoCupom) return;
+    setAplicandoCupom(true);
+    setCupomMensagem(null);
+    try {
+      const params = new URLSearchParams({
+        codigo: codigoCupom.trim(),
+        valorTotal: totalBruto.toString(),
+      });
+      const res = await fetch(`/api/v1/coupons/validate?${params.toString()}`);
+      const data = await res.json();
+      if (!res.ok) {
+        setCupomMensagem(data?.error || "Não foi possível aplicar o cupom");
+        removerCupom();
+        return;
+      }
+      aplicarCupom({
+        codigo: codigoCupom.trim(),
+        desconto: data.desconto,
+        tipo: data.cupom.tipo,
+        valor: data.cupom.valor,
+      });
+      setCupomMensagem(`Cupom aplicado: -R$ ${data.desconto.toFixed(2)}`);
+    } catch (err) {
+      setCupomMensagem("Erro ao validar cupom");
+      removerCupom();
+    } finally {
+      setAplicandoCupom(false);
+    }
   };
 
   return (
@@ -112,8 +149,20 @@ export default function CarrinhoPage() {
               </div>
 
               {/* Total */}
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 mb-6">
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 mb-6 space-y-2">
                 <div className="flex justify-between items-center">
+                  <span className="text-lg font-semibold text-gray-700">Subtotal</span>
+                  <span className="text-2xl font-bold text-gray-900">
+                    R$ {totalBruto.toFixed(2)}
+                  </span>
+                </div>
+                {desconto > 0 && (
+                  <div className="flex justify-between items-center text-green-700">
+                    <span className="text-sm font-semibold">Desconto ({pedido.cupom?.codigo})</span>
+                    <span className="text-xl font-bold">- R$ {desconto.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center border-t border-purple-100 pt-2">
                   <span className="text-2xl font-bold text-gray-800">Total:</span>
                   <span className="text-4xl font-bold text-green-600">
                     R$ {total.toFixed(2)}
@@ -122,6 +171,40 @@ export default function CarrinhoPage() {
                 <p className="text-sm text-gray-600 mt-2 text-right">
                   {pedido.potes.length} {pedido.potes.length === 1 ? 'pote' : 'potes'} no carrinho
                 </p>
+              </div>
+
+              {/* Cupom */}
+              <div className="bg-white border border-purple-100 rounded-xl p-4 mb-6 space-y-3">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    value={codigoCupom}
+                    onChange={(e) => setCodigoCupom(e.target.value)}
+                    placeholder="Código do cupom"
+                    className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleAplicarCupom}
+                      disabled={!codigoCupom || aplicandoCupom}
+                      className="bg-purple-600 hover:bg-purple-700 disabled:opacity-60 text-white px-4 py-2 rounded-lg font-semibold"
+                    >
+                      {aplicandoCupom ? "Aplicando..." : "Aplicar"}
+                    </button>
+                    {pedido.cupom && (
+                      <button
+                        onClick={() => { removerCupom(); setCupomMensagem(null); }}
+                        className="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-200"
+                      >
+                        Remover
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {cupomMensagem && (
+                  <p className={`text-sm ${cupomMensagem.startsWith("Cupom") ? "text-green-700" : "text-red-600"}`}>
+                    {cupomMensagem}
+                  </p>
+                )}
               </div>
 
               {/* Botões de ação */}
@@ -147,4 +230,3 @@ export default function CarrinhoPage() {
     </div>
   );
 }
-
