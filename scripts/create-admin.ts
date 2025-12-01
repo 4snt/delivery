@@ -33,4 +33,4 @@ async function createAdmin() {
   }
 }
 
-createAdminUser();
+createAdmin();

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { usePedido } from "@/app/ui/pedido/PedidoContext";
 
 type Pedido = {
   id: number;
@@ -28,6 +30,8 @@ type Favorito = {
 
 export default function AcompanharPedidoPage() {
   const { data: session } = useSession();
+  const router = useRouter();
+  const { adicionarPote } = usePedido();
   const [email, setEmail] = useState("");
   const [pedidoId, setPedidoId] = useState("");
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
@@ -35,6 +39,7 @@ export default function AcompanharPedidoPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const clienteId = (session?.user as any)?.id;
+  const userEmail = session?.user?.email;
 
   const formatData = (dateStr?: string) => {
     if (!dateStr) return "-";
@@ -42,20 +47,29 @@ export default function AcompanharPedidoPage() {
     return isNaN(parsed.getTime()) ? "-" : parsed.toLocaleString();
   };
 
-  const buscar = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const buscarPedidos = async ({
+    email: emailParam,
+    pedidoId: pedidoIdParam,
+    clienteId: clienteIdParam,
+  }: {
+    email?: string;
+    pedidoId?: string;
+    clienteId?: string;
+  }) => {
     setError(null);
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (email) params.append("email", email);
-      if (pedidoId) params.append("id", pedidoId);
-      const res = await fetch(`/api/pedidos?${params.toString()}`);
+      if (emailParam) params.append("email", emailParam);
+      if (pedidoIdParam) params.append("id", pedidoIdParam);
+      if (clienteIdParam) params.append("clienteId", clienteIdParam);
+      const queryString = params.toString();
+      const res = await fetch(`/api/pedidos${queryString ? `?${queryString}` : ""}`);
       if (!res.ok) throw new Error("Não foi possível localizar pedidos");
       const data = await res.json();
       let filtrados = data as Pedido[];
-      if (pedidoId) {
-        filtrados = filtrados.filter((p) => String(p.id) === pedidoId);
+      if (pedidoIdParam) {
+        filtrados = filtrados.filter((p) => String(p.id) === pedidoIdParam);
       }
       setPedidos(filtrados);
     } catch (err) {
@@ -63,6 +77,20 @@ export default function AcompanharPedidoPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const buscar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const hasManualFilters = Boolean(email || pedidoId);
+    if (!clienteId && !hasManualFilters) {
+      setError("Informe seu e-mail ou o número do pedido.");
+      return;
+    }
+    await buscarPedidos({
+      email: hasManualFilters ? email : undefined,
+      pedidoId: hasManualFilters ? pedidoId : undefined,
+      clienteId: hasManualFilters ? undefined : clienteId,
+    });
   };
 
   const carregarFavoritos = async () => {
@@ -116,23 +144,59 @@ export default function AcompanharPedidoPage() {
     }
   };
 
+  const adicionarFavoritoAoCarrinho = (favorito: Favorito) => {
+    adicionarPote({
+      tamanho: favorito.tamanho,
+      preco: favorito.preco,
+      sabores: favorito.sabores.map((s) => ({
+        id: s.sabor.id,
+        nome: s.sabor.nome,
+      })),
+      adicionais: favorito.adicionais.map((a) => ({
+        id: a.adicional.id,
+        nome: a.adicional.nome,
+      })),
+    });
+    router.push("/ui/pedido/carrinho");
+  };
+
   useEffect(() => {
+    if (!clienteId) {
+      setPedidos([]);
+      setFavoritos([]);
+      return;
+    }
     carregarFavoritos();
+  }, [clienteId]);
+
+  useEffect(() => {
+    if (clienteId && userEmail && !email) {
+      setEmail(userEmail);
+    }
+  }, [clienteId, userEmail, email]);
+
+  useEffect(() => {
+    if (!clienteId) return;
+    buscarPedidos({ clienteId });
   }, [clienteId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-6">
       <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-3xl p-8 border border-purple-100">
         <h1 className="text-3xl font-bold text-purple-800 mb-4">Acompanhar Pedido</h1>
-        <p className="text-gray-600 mb-6">Informe seu e-mail e, opcionalmente, o número do pedido para ver o status.</p>
+        <p className="text-gray-600 mb-6">
+          {clienteId
+            ? "Você está logado: carregamos automaticamente seus pedidos. Se quiser buscar outro pedido, informe e-mail ou número."
+            : "Informe seu e-mail e, opcionalmente, o número do pedido para ver o status."}
+        </p>
 
         <form onSubmit={buscar} className="grid gap-4 mb-6">
           <input
             type="email"
-            required
+            required={!clienteId}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Seu e-mail cadastrado"
+            placeholder={clienteId ? "Outro e-mail (opcional)" : "Seu e-mail cadastrado"}
             className="border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <input
@@ -204,12 +268,20 @@ export default function AcompanharPedidoPage() {
                       <p className="text-sm text-gray-600">Adicionais: {fav.adicionais.map((a) => a.adicional.nome).join(", ") || "-"}</p>
                       <p className="text-green-700 font-semibold mt-1">R$ {fav.preco.toFixed(2)}</p>
                     </div>
-                    <button
-                      onClick={() => removerFavorito(fav.id)}
-                      className="text-red-600 text-sm hover:underline"
-                    >
-                      Remover
-                    </button>
+                    <div className="flex flex-col items-end gap-2">
+                      <button
+                        onClick={() => adicionarFavoritoAoCarrinho(fav)}
+                        className="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-semibold hover:bg-purple-700 transition"
+                      >
+                        Adicionar ao carrinho
+                      </button>
+                      <button
+                        onClick={() => removerFavorito(fav.id)}
+                        className="text-red-600 text-sm hover:underline"
+                      >
+                        Remover
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

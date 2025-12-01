@@ -12,15 +12,15 @@ export const ORDER_STATUS = {
 
 // Pizza Sizes
 export const PIZZA_SIZES = {
-  SMALL: { label: 'Pequeno', value: 'pequeno', price: 25, description: '300ml' },
-  MEDIUM: { label: 'Médio', value: 'medio', price: 35, description: '500ml' },
-  LARGE: { label: 'Grande', value: 'grande', price: 45, description: '700ml' },
+  SMALL: { label: 'Pequeno', value: 'pequeno', price: 25, description: '300ml', icon: '🍨' },
+  MEDIUM: { label: 'Médio', value: 'medio', price: 35, description: '500ml', icon: '🍧' },
+  LARGE: { label: 'Grande', value: 'grande', price: 45, description: '700ml', icon: '🍦' },
 } as const;
 
 export const PIZZA_SIZES_ARRAY = [
-  { label: 'Pequeno', value: 'pequeno', price: 25, description: '300ml' },
-  { label: 'Médio', value: 'medio', price: 35, description: '500ml' },
-  { label: 'Grande', value: 'grande', price: 45, description: '700ml' },
+  { label: 'Pequeno', value: 'pequeno', price: 25, description: '300ml', icon: '🍨' },
+  { label: 'Médio', value: 'medio', price: 35, description: '500ml', icon: '🍧' },
+  { label: 'Grande', value: 'grande', price: 45, description: '700ml', icon: '🍦' },
 ];
 
 // Payment Methods

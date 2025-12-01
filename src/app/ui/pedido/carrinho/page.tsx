@@ -2,17 +2,21 @@
 import { usePedido } from "../PedidoContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function CarrinhoPage() {
   const { pedido, removerPote, aplicarCupom, removerCupom } = usePedido();
   const router = useRouter();
+  const { data: session } = useSession();
   const [codigoCupom, setCodigoCupom] = useState(pedido.cupom?.codigo || "");
   const [cupomMensagem, setCupomMensagem] = useState<string | null>(null);
   const [aplicandoCupom, setAplicandoCupom] = useState(false);
+  const [favoritoMensagem, setFavoritoMensagem] = useState<string | null>(null);
 
   const totalBruto = pedido.potes.reduce((acc, pote) => acc + pote.preco, 0);
   const desconto = pedido.desconto || 0;
   const total = Math.max(0, totalBruto - desconto);
+  const clienteId = (session?.user as any)?.id;
 
   const handleRemover = (idx: number) => {
     removerPote(idx);
@@ -55,6 +59,38 @@ export default function CarrinhoPage() {
       removerCupom();
     } finally {
       setAplicandoCupom(false);
+    }
+  };
+
+  const handleSalvarFavorito = async (idx: number) => {
+    setFavoritoMensagem(null);
+    if (!clienteId) {
+      setFavoritoMensagem("Entre para salvar favoritos.");
+      router.push("/login");
+      return;
+    }
+    const pote = pedido.potes[idx];
+    try {
+      const res = await fetch("/api/v1/favorites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clienteId,
+          nome: `Pote ${idx + 1} - ${pote.tamanho}`,
+          tamanho: pote.tamanho,
+          preco: pote.preco,
+          sabores: pote.sabores.map((s) => ({ id: s.id })),
+          adicionais: (pote.adicionais || []).map((a) => ({ id: a.id })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setFavoritoMensagem(data?.error || "Erro ao salvar favorito.");
+        return;
+      }
+      setFavoritoMensagem("Favorito salvo! Veja em Acompanhar > Meus Favoritos.");
+    } catch (err) {
+      setFavoritoMensagem("Erro ao salvar favorito.");
     }
   };
 
@@ -106,6 +142,12 @@ export default function CarrinhoPage() {
                         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-all"
                       >
                         Remover
+                      </button>
+                      <button
+                        onClick={() => handleSalvarFavorito(idx)}
+                        className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all ml-2"
+                      >
+                        Salvar favorito
                       </button>
                     </div>
 
@@ -204,6 +246,9 @@ export default function CarrinhoPage() {
                   <p className={`text-sm ${cupomMensagem.startsWith("Cupom") ? "text-green-700" : "text-red-600"}`}>
                     {cupomMensagem}
                   </p>
+                )}
+                {favoritoMensagem && (
+                  <p className="text-sm text-purple-700">{favoritoMensagem}</p>
                 )}
               </div>
 
