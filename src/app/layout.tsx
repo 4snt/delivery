@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Açai do Vale - Delivery",
   description: "Os melhores açaís e sorvetes artesanais direto na sua casa!",
   icons: {
-    icon: '/logo.png',
+    icon: "/favicon.ico",
     apple: '/logo.png',
   },
 };
